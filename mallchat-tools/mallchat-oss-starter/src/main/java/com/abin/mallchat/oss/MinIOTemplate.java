@@ -91,9 +91,16 @@ public class MinIOTemplate {
                         .object(absolutePath)
                         .expiry(60 * 60 * 24)
                         .build());
+        String downloadSignedUrl = minioClient.getPresignedObjectUrl(
+                GetPresignedObjectUrlArgs.builder()
+                        .method(Method.GET)
+                        .bucket(ossProperties.getBucketName())
+                        .object(absolutePath)
+                        .expiry(60 * 60 * 24)
+                        .build());
         return OssResp.builder()
                 .uploadUrl(url)
-                .downloadUrl(getDownloadUrl(ossProperties.getBucketName(), absolutePath))
+                .downloadUrl(downloadSignedUrl)
                 .build();
     }
 

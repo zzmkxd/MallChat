@@ -5,7 +5,7 @@
 /target/*
 /**/target/
 
-
+application-local.properties
 # git
 *.orig
 .flattened-pom.xml
@@ -15,6 +15,7 @@ demo-client/.flattened-pom.xml
 # Log file
 *.log
 *_rpc_port.txt
+logs/
 
 # BlueJ files
 *.ctxt
