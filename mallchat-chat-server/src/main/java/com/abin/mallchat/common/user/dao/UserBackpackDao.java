@@ -25,7 +25,7 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
         return lambdaQuery().eq(UserBackpack::getUid, uid)
                 .eq(UserBackpack::getItemId, itemId)
                 .eq(UserBackpack::getStatus, YesOrNoEnum.NO.getStatus())
-                .count();
+                .count().intValue();
     }
 
     public UserBackpack getFirstValidItem(Long uid, Long itemId) {

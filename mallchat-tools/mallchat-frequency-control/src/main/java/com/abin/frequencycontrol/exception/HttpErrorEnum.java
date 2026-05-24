@@ -6,7 +6,7 @@ import com.abin.frequencycontrol.domain.vo.response.ApiResult;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.Charset;
 

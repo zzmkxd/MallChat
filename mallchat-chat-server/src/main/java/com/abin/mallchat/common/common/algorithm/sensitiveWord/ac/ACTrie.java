@@ -2,7 +2,6 @@ package com.abin.mallchat.common.common.algorithm.sensitiveWord.ac;
 
 import com.google.common.collect.Lists;
 
-import javax.annotation.concurrent.NotThreadSafe;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import java.util.stream.Collectors;
  * aho-corasick算法（又称AC自动机算法）
  * Created by berg on 2023/6/18.
  */
-@NotThreadSafe
 public class ACTrie {
 
     // 根节点

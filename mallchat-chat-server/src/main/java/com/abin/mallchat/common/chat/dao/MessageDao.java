@@ -54,7 +54,7 @@ public class MessageDao extends ServiceImpl<MessageMapper, Message> {
                 .eq(Message::getRoomId, roomId)
                 .gt(Message::getId, fromId)
                 .le(Message::getId, toId)
-                .count();
+                .count().intValue();
     }
 
     public void invalidByUid(Long uid) {
@@ -68,7 +68,7 @@ public class MessageDao extends ServiceImpl<MessageMapper, Message> {
         return lambdaQuery()
                 .eq(Message::getRoomId, roomId)
                 .gt(Objects.nonNull(readTime), Message::getCreateTime, readTime)
-                .count();
+                .count().intValue();
     }
 
     /**

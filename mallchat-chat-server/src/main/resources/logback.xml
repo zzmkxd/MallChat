@@ -25,7 +25,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 按天生成日志文件 -->
             <fileNamePattern>
-                ${LOG_PATH}/archived/${LOG_FILE}.%d{dd-MM-yyyy}.log
+                ${LOG_PATH}/archived/${LOG_FILE}.%d{yyyy-MM-dd}.log
             </fileNamePattern>
             <!--保留天数-->
             <maxHistory>30</maxHistory>
@@ -48,7 +48,7 @@
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>
-                ${LOG_PATH}/archived/${LOG_FILE}.%d{dd-MM-yyyy}.error.log
+                ${LOG_PATH}/archived/${LOG_FILE}.%d{yyyy-MM-dd}.error.log
             </fileNamePattern>
             <maxHistory>30</maxHistory>
             <totalSizeCap>2GB</totalSizeCap>

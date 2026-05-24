@@ -10,7 +10,7 @@ import com.abin.mallchat.common.common.utils.AssertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.lang.reflect.ParameterizedType;
 
 /**

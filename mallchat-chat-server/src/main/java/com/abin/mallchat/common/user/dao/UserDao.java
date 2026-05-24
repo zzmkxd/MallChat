@@ -76,7 +76,7 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
         return lambdaQuery()
                 .eq(User::getActiveStatus, ChatActiveStatusEnum.ONLINE.getStatus())
                 .in(CollectionUtil.isNotEmpty(memberUidList), User::getId, memberUidList)
-                .count();
+                .count().intValue();
     }
 
     public CursorPageBaseResp<User> getCursorPage(List<Long> memberUidList, CursorPageBaseReq request, ChatActiveStatusEnum online) {

@@ -58,7 +58,7 @@ public class UserEmojiServiceImpl implements UserEmojiService {
         Integer existsCount = userEmojiDao.lambdaQuery()
                 .eq(UserEmoji::getExpressionUrl, req.getExpressionUrl())
                 .eq(UserEmoji::getUid, uid)
-                .count();
+                .count().intValue();
         AssertUtil.isFalse(existsCount > 0, "当前表情已存在哦~~");
         UserEmoji insert = UserEmoji.builder().uid(uid).expressionUrl(req.getExpressionUrl()).build();
         userEmojiDao.save(insert);

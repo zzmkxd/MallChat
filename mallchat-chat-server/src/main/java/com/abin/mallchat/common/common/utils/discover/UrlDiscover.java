@@ -4,7 +4,7 @@ import cn.hutool.core.date.StopWatch;
 import com.abin.mallchat.common.common.utils.discover.domain.UrlInfo;
 import org.jsoup.nodes.Document;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.Map;
 
 /**

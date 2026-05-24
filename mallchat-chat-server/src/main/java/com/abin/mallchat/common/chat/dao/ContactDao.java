@@ -39,20 +39,20 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
                 .eq(Contact::getRoomId, message.getRoomId())
                 .ne(Contact::getUid, message.getFromUid())// 不需要查询出自己
                 .ge(Contact::getReadTime, message.getCreateTime())
-                .count();
+                .count().intValue();
     }
 
     public Integer getTotalCount(Long roomId) {
         return lambdaQuery()
                 .eq(Contact::getRoomId, roomId)
-                .count();
+                .count().intValue();
     }
 
     public Integer getUnReadCount(Message message) {
         return lambdaQuery()
                 .eq(Contact::getRoomId, message.getRoomId())
                 .lt(Contact::getReadTime, message.getCreateTime())
-                .count();
+                .count().intValue();
     }
 
     public CursorPageBaseResp<Contact> getReadPage(Message message, CursorPageBaseReq cursorPageBaseReq) {

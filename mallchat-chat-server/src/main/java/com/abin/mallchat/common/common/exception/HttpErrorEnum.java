@@ -7,7 +7,7 @@ import com.google.common.base.Charsets;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
