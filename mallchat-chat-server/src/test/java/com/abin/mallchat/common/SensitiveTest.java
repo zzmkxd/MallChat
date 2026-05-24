@@ -3,7 +3,7 @@ package com.abin.mallchat.common;
 import com.abin.mallchat.common.common.algorithm.sensitiveWord.ACFilter;
 import com.abin.mallchat.common.common.algorithm.sensitiveWord.ACProFilter;
 import com.abin.mallchat.common.common.algorithm.sensitiveWord.DFAFilter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import java.util.*;
 
 /**

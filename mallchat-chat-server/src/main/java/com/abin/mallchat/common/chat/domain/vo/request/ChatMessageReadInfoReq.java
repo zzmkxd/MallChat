@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.chat.domain.vo.request;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatMessageReadInfoReq {
-    @ApiModelProperty("消息id集合（只查本人）")
+    @Schema(description = "消息id集合（只查本人）")
     @Size(max = 20)
     private List<Long> msgIds;
 }

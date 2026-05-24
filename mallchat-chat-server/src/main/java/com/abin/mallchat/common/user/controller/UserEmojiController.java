@@ -7,8 +7,8 @@ import com.abin.mallchat.common.common.utils.RequestHolder;
 import com.abin.mallchat.common.user.domain.vo.request.user.UserEmojiReq;
 import com.abin.mallchat.common.user.domain.vo.response.user.UserEmojiResp;
 import com.abin.mallchat.common.user.service.UserEmojiService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.annotation.Resource;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/capi/user/emoji")
-@Api(tags = "用户表情包管理相关接口")
+@Tag(name = "用户表情包管理相关接口")
 public class UserEmojiController {
 
     /**
@@ -41,7 +41,7 @@ public class UserEmojiController {
      * @createTime 2023/7/3 14:46
      **/
     @GetMapping("/list")
-    @ApiOperation("表情包列表")
+    @Operation(summary = "表情包列表")
     public ApiResult<List<UserEmojiResp>> getEmojisPage() {
         return ApiResult.success(emojiService.list(RequestHolder.get().getUid()));
     }
@@ -56,7 +56,7 @@ public class UserEmojiController {
      * @createTime 2023/7/3 14:46
      **/
     @PostMapping()
-    @ApiOperation("新增表情包")
+    @Operation(summary = "新增表情包")
     public ApiResult<IdRespVO> insertEmojis(@Valid @RequestBody UserEmojiReq req) {
         return emojiService.insert(req, RequestHolder.get().getUid());
     }
@@ -69,7 +69,7 @@ public class UserEmojiController {
      * @createTime 2023/7/3 14:46
      **/
     @DeleteMapping()
-    @ApiOperation("删除表情包")
+    @Operation(summary = "删除表情包")
     public ApiResult<Void> deleteEmojis(@Valid @RequestBody IdReqVO reqVO) {
         emojiService.remove(reqVO.getId(), RequestHolder.get().getUid());
         return ApiResult.success();

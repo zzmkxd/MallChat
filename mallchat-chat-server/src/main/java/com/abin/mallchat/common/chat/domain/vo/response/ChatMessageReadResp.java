@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.chat.domain.vo.response;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +16,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatMessageReadResp {
-    @ApiModelProperty("已读或者未读的用户uid")
+    @Schema(description = "已读或者未读的用户uid")
     private Long uid;
 }

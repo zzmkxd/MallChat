@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.user.domain.vo.response.friend;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 public class FriendCheckResp {
 
-    @ApiModelProperty("校验结果")
+    @Schema(description = "校验结果")
     private List<FriendCheck> checkedList;
 
     @Data

@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.user.domain.vo.request.user;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +21,7 @@ import jakarta.validation.constraints.NotNull;
 public class WearingBadgeReq {
 
     @NotNull
-    @ApiModelProperty("徽章id")
+    @Schema(description = "徽章id")
     private Long badgeId;
 
 }

@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.chat.domain.vo.request;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,14 +19,14 @@ import jakarta.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ChatMessageMarkReq {
     @NotNull
-    @ApiModelProperty("消息id")
+    @Schema(description = "消息id")
     private Long msgId;
 
     @NotNull
-    @ApiModelProperty("标记类型 1点赞 2举报")
+    @Schema(description = "标记类型 1点赞 2举报")
     private Integer markType;
 
     @NotNull
-    @ApiModelProperty("动作类型 1确认 2取消")
+    @Schema(description = "动作类型 1确认 2取消")
     private Integer actType;
 }

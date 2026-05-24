@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.chat.domain.entity.msg;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -21,7 +21,7 @@ import java.io.Serializable;
 public class FileMsgDTO extends BaseFileDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("文件名（带后缀）")
+    @Schema(description = "文件名（带后缀）")
     @NotBlank
     private String fileName;
 

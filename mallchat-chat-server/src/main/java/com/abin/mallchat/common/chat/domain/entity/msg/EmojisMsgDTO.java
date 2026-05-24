@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.chat.domain.entity.msg;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +21,7 @@ import java.io.Serializable;
 public class EmojisMsgDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("下载地址")
+    @Schema(description = "下载地址")
     @NotBlank
     private String url;
 }

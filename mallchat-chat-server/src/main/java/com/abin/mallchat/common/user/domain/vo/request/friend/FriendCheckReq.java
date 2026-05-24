@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.user.domain.vo.request.friend;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +24,7 @@ public class FriendCheckReq {
 
     @NotEmpty
     @Size(max = 50)
-    @ApiModelProperty("校验好友的uid")
+    @Schema(description = "校验好友的uid")
     private List<Long> uidList;
 
 }

@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.user.domain.vo.request.friend;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +21,7 @@ import jakarta.validation.constraints.NotNull;
 public class FriendApproveReq {
 
     @NotNull
-    @ApiModelProperty("申请id")
+    @Schema(description = "申请id")
     private Long applyId;
 
 }

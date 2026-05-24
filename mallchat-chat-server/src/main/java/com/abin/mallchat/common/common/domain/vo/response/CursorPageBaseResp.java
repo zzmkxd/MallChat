@@ -2,8 +2,8 @@ package com.abin.mallchat.common.common.domain.vo.response;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,18 +16,17 @@ import java.util.List;
  * @since 2023-03-19
  */
 @Data
-@ApiModel("游标翻页返回")
 @AllArgsConstructor
 @NoArgsConstructor
 public class CursorPageBaseResp<T> {
 
-    @ApiModelProperty("游标（下次翻页带上这参数）")
+    @Schema(description = "游标（下次翻页带上这参数）")
     private String cursor;
 
-    @ApiModelProperty("是否最后一页")
+    @Schema(description = "是否最后一页")
     private Boolean isLast = Boolean.FALSE;
 
-    @ApiModelProperty("数据列表")
+    @Schema(description = "数据列表")
     private List<T> list;
 
     public static <T> CursorPageBaseResp<T> init(CursorPageBaseResp cursorPage, List<T> list) {

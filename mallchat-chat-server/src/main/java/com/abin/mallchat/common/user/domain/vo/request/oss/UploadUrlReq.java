@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.user.domain.vo.request.oss;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,10 +20,10 @@ import jakarta.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UploadUrlReq {
-    @ApiModelProperty(value = "文件名（带后缀）")
+    @Schema(description = "文件名（带后缀）")
     @NotBlank
     private String fileName;
-    @ApiModelProperty(value = "上传场景1.聊天室,2.表情包")
+    @Schema(description = "上传场景1.聊天室,2.表情包")
     @NotNull
     private Integer scene;
 }

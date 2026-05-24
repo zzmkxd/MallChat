@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.chat.domain.vo.request;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +19,6 @@ import jakarta.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ChatMessageMemberReq {
     @NotNull
-    @ApiModelProperty("会话id")
+    @Schema(description = "会话id")
     private Long roomId;
 }

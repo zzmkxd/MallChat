@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.user.domain.vo.response.ws;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WSMessageRead {
-    @ApiModelProperty("消息")
+    @Schema(description = "消息")
     private Long msgId;
-    @ApiModelProperty("阅读人数（可能为0）")
+    @Schema(description = "阅读人数（可能为0）")
     private Integer readCount;
 }

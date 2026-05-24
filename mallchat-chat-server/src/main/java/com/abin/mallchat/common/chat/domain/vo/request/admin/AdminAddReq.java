@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.chat.domain.vo.request.admin;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import jakarta.validation.constraints.NotNull;
@@ -15,11 +15,11 @@ import java.util.List;
 @Data
 public class AdminAddReq {
     @NotNull
-    @ApiModelProperty("房间号")
+    @Schema(description = "房间号")
     private Long roomId;
 
     @NotNull
     @Size(min = 1, max = 3)
-    @ApiModelProperty("需要添加管理的列表")
+    @Schema(description = "需要添加管理的列表")
     private List<Long> uidList;
 }

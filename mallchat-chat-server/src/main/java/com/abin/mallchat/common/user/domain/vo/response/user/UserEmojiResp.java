@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.user.domain.vo.response.user;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,13 +20,13 @@ public class UserEmojiResp {
     /**
      * id
      */
-    @ApiModelProperty(value = "id")
+    @Schema(description = "id")
     private Long id;
 
     /**
      * 表情地址
      */
-    @ApiModelProperty(value = "表情url")
+    @Schema(description = "表情url")
     private String expressionUrl;
 
 }

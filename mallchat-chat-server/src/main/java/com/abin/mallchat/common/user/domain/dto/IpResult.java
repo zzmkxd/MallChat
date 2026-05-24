@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.user.domain.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,11 +13,11 @@ import java.util.Objects;
  */
 @Data
 public class IpResult<T> implements Serializable {
-    @ApiModelProperty("错误码")
+    @Schema(description = "错误码")
     private Integer code;
-    @ApiModelProperty("错误消息")
+    @Schema(description = "错误消息")
     private String msg;
-    @ApiModelProperty("返回对象")
+    @Schema(description = "返回对象")
     private T data;
 
     public boolean isSuccess() {

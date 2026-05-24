@@ -2,8 +2,8 @@ package com.abin.mallchat.common.common.domain.vo.request;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,17 +17,16 @@ import jakarta.validation.constraints.Min;
  * @since 2023-03-19
  */
 @Data
-@ApiModel("游标翻页请求")
 @AllArgsConstructor
 @NoArgsConstructor
 public class CursorPageBaseReq {
 
-    @ApiModelProperty("页面大小")
+    @Schema(description = "页面大小")
     @Min(0)
     @Max(100)
     private Integer pageSize = 10;
 
-    @ApiModelProperty("游标（初始为null，后续请求附带上次翻页的游标）")
+    @Schema(description = "游标（初始为null，后续请求附带上次翻页的游标）")
     private String cursor;
 
     public Page plusPage() {

@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.chat.domain.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,21 +17,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatMessageMarkDTO {
 
-    @ApiModelProperty("操作者")
+    @Schema(description = "操作者")
     private Long uid;
 
-    @ApiModelProperty("消息id")
+    @Schema(description = "消息id")
     private Long msgId;
 
     /**
      * @see com.abin.mallchat.common.chat.domain.enums.MessageMarkTypeEnum
      */
-    @ApiModelProperty("标记类型 1点赞 2举报")
+    @Schema(description = "标记类型 1点赞 2举报")
     private Integer markType;
 
     /**
      * @see com.abin.mallchat.common.chat.domain.enums.MessageMarkActTypeEnum
      */
-    @ApiModelProperty("动作类型 1确认 2取消")
+    @Schema(description = "动作类型 1确认 2取消")
     private Integer actType;
 }

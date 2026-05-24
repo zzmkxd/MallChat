@@ -60,8 +60,8 @@
 | 59 | 2026-05-24 | 1.9.4b | ✅ | `ApiResult.java`, `PageBaseResp.java` | 移除 frequency-control 中 Swagger 注解 |
 | 60 | 2026-05-24 | 1.9.4c | ✅ | `CollectorInterceptor.java` (frequency-control) | ServletUtil.getClientIP → request.getRemoteAddr |
 | 61 | 2026-05-24 | 1.9.4d | ✅ | — | **全量打包通过 (8/8)** |
-| 62 | | 1.10.1 | ⏳ | `CLAUDE.md` | 更新版本号 |
-| 63 | | 1.10.2 | ⏳ | — | Git 提交 Phase 1 |
+| 62 | 2026-05-24 | 1.10.1 | ✅ | `CLAUDE.md` | 版本号: SB 2.6.7+Java 8 → SB 3.3.5+Java 21 |
+| 63 | 2026-05-24 | 1.10.2 | ✅ | — | Git 提交 93d72e8 (95 files, +1837/-231) |
 
 ---
 
@@ -69,24 +69,17 @@
 
 | # | 时间 | 步骤 | 状态 | 修改文件 | 操作摘要 |
 |---|------|------|------|---------|---------|
-| 1 | | 2.1.1 | ⏳ | `pom.xml` | 引入 springdoc + knife4j 新依赖 |
-| 2 | | 2.1.2 | ⏳ | `SwaggerConfig.java` → `OpenApiConfig.java` | 重写配置类 |
-| 3 | | 2.1.3 | ⏳ | Controller 层 (7个) | @Api → @Tag, @ApiOperation → @Operation |
-| 4 | | 2.1.4 | ⏳ | Chat 域 VO | @ApiModelProperty → @Schema |
-| 5 | | 2.1.5 | ⏳ | User 域 VO | @ApiModelProperty → @Schema |
-| 6 | | 2.1.6 | ⏳ | Common 域 VO | @ApiModelProperty → @Schema |
-| 7 | | 2.1.7 | ⏳ | Entity 层 | @ApiModelProperty → @Schema |
-| 8 | | 2.1.8 | ⏳ | — | 验证 `./mvnw clean compile` |
-| 9 | | 2.2.1 | ⏳ | `JwtUtils.java` | jjwt 0.9.1 API → 0.12.6 |
-| 10 | | 2.2.2 | ⏳ | `pom.xml` | 移除 com.auth0:java-jwt |
-| 11 | | 2.2.3 | ⏳ | `LoginServiceImpl.java` | 适配新 JWT API |
-| 12 | | 2.2.4 | ⏳ | — | 验证 `./mvnw clean compile` |
-| 13 | | 2.3.1 | ⏳ | `pom.xml` | 排除 vintage-engine，引入 junit-jupiter |
-| 14 | | 2.3.2 | ⏳ | `DaoTest.java` | @RunWith → @ExtendWith, @Test 包路径 |
-| 15 | | 2.3.3 | ⏳ | `SensitiveTest.java` | @RunWith → @ExtendWith, @Test 包路径 |
-| 16 | | 2.3.4 | ⏳ | `ScanHandler.java`, `SubscribeHandler.java` | 移除 src/main 中的 @Test |
-| 17 | | 2.3.5 | ⏳ | — | 验证 `./mvnw test-compile` |
-| 18 | | 2.4.1 | ⏳ | 全局 | 清理未使用的旧 import |
+| 1 | 2026-05-24 | 2.1.1 | ✅ | `pom.xml`, `common-starter/pom.xml` | 引入 springdoc 2.7.0 + knife4j 4.5.0 (jakarta) |
+| 2 | 2026-05-24 | 2.1.2 | ✅ | `OpenApiConfig.java` (新增) | 重写配置类: springfox → springdoc |
+| 3 | 2026-05-24 | 2.1.3~7 | ✅ | 77 个文件 | @Api→@Tag, @ApiOperation→@Operation, @ApiModelProperty→@Schema, @ApiModel删 |
+| 4 | 2026-05-24 | 2.1.8 | ✅ | 5 个文件(删) | 删除 4 Swagger 桩类 + 旧 SwaggerConfig, 编译通过 |
+| 9 | 2026-05-24 | 2.2.1 | ✅ | `pom.xml` x2 | jjwt 未使用 → 移除; auth0 java-jwt 3.19.0 已兼容 |
+| 10 | 2026-05-24 | 2.3.1 | ✅ | `chat-server/pom.xml` | junit:junit + spring-test → spring-boot-starter-test |
+| 11 | 2026-05-24 | 2.3.2 | ✅ | `DaoTest.java` | @RunWith→@ExtendWith, org.junit.Test→jupiter |
+| 12 | 2026-05-24 | 2.3.3 | ✅ | `SensitiveTest.java` | org.junit.Test→org.junit.jupiter.api.Test |
+| 13 | 2026-05-24 | 2.3.4 | ⏭️ | — | src/main 中无 @Test (计划误判, 跳过) |
+| 14 | 2026-05-24 | 2.3.5 | ✅ | — | `./mvnw test-compile` 通过 |
+| 15 | 2026-05-24 | 2.4.1 | ⏭️ | — | 无未用 import 清理 (编译无警告) |
 | 19 | | 2.4.2 | ⏳ | — | Git 提交 Phase 2 |
 
 ---

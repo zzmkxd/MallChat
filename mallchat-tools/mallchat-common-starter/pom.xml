@@ -63,11 +63,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-        <!--JWT(Json Web Token)登录支持-->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -85,14 +80,16 @@
             <groupId>com.github.binarywang</groupId>
             <artifactId>weixin-java-mp</artifactId>
         </dependency>
-        <!-- TODO Phase 2: 替换为 openapi 依赖 -->
-        <!-- knife4j 2.x 不兼容 Spring Boot 3
+        <!-- Springdoc OpenAPI (Spring Boot 3 兼容) -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+        <!-- Knife4j OpenAPI3 Jakarta 版 -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>2.0.9</version>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
         </dependency>
-        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>

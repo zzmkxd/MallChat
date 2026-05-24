@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.chat.domain.entity.msg;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -21,7 +21,7 @@ import java.io.Serializable;
 public class SoundMsgDTO extends BaseFileDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("时长（秒）")
+    @Schema(description = "时长（秒）")
     @NotNull
     private Integer second;
 }

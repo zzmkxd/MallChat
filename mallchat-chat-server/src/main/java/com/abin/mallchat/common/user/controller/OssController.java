@@ -5,8 +5,8 @@ import com.abin.mallchat.common.common.utils.RequestHolder;
 import com.abin.mallchat.common.user.domain.vo.request.oss.UploadUrlReq;
 import com.abin.mallchat.common.user.service.OssService;
 import com.abin.mallchat.oss.domain.OssResp;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +21,13 @@ import jakarta.validation.Valid;
  */
 @RestController
 @RequestMapping("/capi/oss")
-@Api(tags = "oss相关接口")
+@Tag(name = "oss相关接口")
 public class OssController {
     @Autowired
     private OssService ossService;
 
     @GetMapping("/upload/url")
-    @ApiOperation("获取临时上传链接")
+    @Operation(summary = "获取临时上传链接")
     public ApiResult<OssResp> getUploadUrl(@Valid UploadUrlReq req) {
         return ApiResult.success(ossService.getUploadUrl(RequestHolder.get().getUid(), req));
     }

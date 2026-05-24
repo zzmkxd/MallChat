@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.chat.domain.vo.request.member;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,10 +19,10 @@ import jakarta.validation.constraints.NotNull;
 @NoArgsConstructor
 public class MemberDelReq {
     @NotNull
-    @ApiModelProperty("会话id")
+    @Schema(description = "会话id")
     private Long roomId;
 
     @NotNull
-    @ApiModelProperty("被移除的uid（主动退群填自己）")
+    @Schema(description = "被移除的uid（主动退群填自己）")
     private Long uid;
 }

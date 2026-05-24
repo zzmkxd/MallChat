@@ -1,6 +1,6 @@
 package com.abin.mallchat.common.common.domain.vo.request;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class IdReqVO {
-    @ApiModelProperty("id")
+    @Schema(description = "id")
     @NotNull
     private long id;
 }

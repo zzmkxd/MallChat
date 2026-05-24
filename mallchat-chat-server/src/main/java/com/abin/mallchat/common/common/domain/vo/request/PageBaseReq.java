@@ -1,8 +1,8 @@
 package com.abin.mallchat.common.common.domain.vo.request;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import jakarta.validation.constraints.Max;
@@ -13,15 +13,14 @@ import jakarta.validation.constraints.Min;
  * @since 2023-03-19
  */
 @Data
-@ApiModel("基础翻页请求")
 public class PageBaseReq {
 
-    @ApiModelProperty("页面大小")
+    @Schema(description = "页面大小")
     @Min(0)
     @Max(50)
     private Integer pageSize = 10;
 
-    @ApiModelProperty("页面索引（从1开始）")
+    @Schema(description = "页面索引（从1开始）")
     private Integer pageNo = 1;
 
     /**
