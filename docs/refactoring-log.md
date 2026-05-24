@@ -323,3 +323,66 @@
   - `frequency-control/CollectorInterceptor.java`: `ServletUtil.getClientIP(request)` → `request.getRemoteAddr()` (hutool javax 残留)
 - **思路**: 全量打包首次暴露了 frequency-control 模块的 Swagger + hutool 问题。与 chat-server 同模式修复：Swagger 注解直接移除，hutool 用原生 API 替代。
 - **验证**: ✅ BUILD SUCCESS — 全 8 模块打包通过
+
+---
+
+## Phase 2 详细变更
+
+### Phase 2.1.1 — 引入 Springdoc + Knife4j 依赖
+
+- **操作**: 根 pom 新增 version properties + dependencyManagement; common-starter pom 新增两依赖
+- **修改文件**: `pom.xml`, `mallchat-tools/mallchat-common-starter/pom.xml`
+- **思路**: SB3 不兼容 springfox/knife4j 2.x，需换到 Springdoc OpenAPI + knife4j-openapi3-jakarta。版本选 springdoc 2.7.0 + knife4j 4.5.0，均为 SB3 兼容的稳定版。
+- **版本属性变动**: springfox-swagger:3.0.0 → springdoc:2.7.0, swagger-models:1.6.0 → knife4j:4.5.0
+
+### Phase 2.1.2 — 重写 OpenApiConfig
+
+- **操作**: 新建 `OpenApiConfig.java`，注册 OpenAPI Bean
+- **修改文件**: `OpenApiConfig.java` (新增), `SwaggerConfig.java` (删除)
+- **思路**: Springfox 的 `@EnableSwagger2WebMvc` + Docket Bean 换为 Springdoc 的 `OpenAPI` Bean。Knife4j 通过 starter 自动集成，无需额外配置。
+- **验证**: 新配置类编译通过
+
+### Phase 2.1.3~2.1.7 — 批量替换 77 文件注解
+
+- **操作**: sed 批量替换，5 条规则:
+  - `import io.swagger.annotations.Api` → `import io.swagger.v3.oas.annotations.tags.Tag`
+  - `import io.swagger.annotations.ApiOperation` → `import io.swagger.v3.oas.annotations.Operation`
+  - `import io.swagger.annotations.ApiModel` → (remove)
+  - `import io.swagger.annotations.ApiModelProperty` → `import io.swagger.v3.oas.annotations.media.Schema`
+  - `@Api(tags="X")` → `@Tag(name="X")`
+  - `@ApiOperation("X")` → `@Operation(summary="X")`
+  - `@ApiModel("X")` → (remove line)
+  - `@ApiModelProperty("X")` / `@ApiModelProperty(value="X")` → `@Schema(description="X")`
+- **修改文件**: 77 个文件 — Controller 7, Chat VO 24+, User VO 14+, Common VO 5+, Entity 6, DTO 5+
+- **思路**: 采样确认所有注解只用 value/tags 两个属性，无需处理 notes/required/hidden 等复杂属性。批量 sed 安全可靠。
+- **验证**: 旧 Swagger 注解零残留
+
+### Phase 2.1.8 — 删除桩类 + 验证
+
+- **操作**: 删除 4 个 Swagger 空桩注解 + 旧 SwaggerConfig
+- **修改文件**: `Api.java`, `ApiModel.java`, `ApiModelProperty.java`, `ApiOperation.java` (4删), `SwaggerConfig.java` (删)
+- **思路**: 77 文件已全部指向 Springdoc 真注解，桩类已无引用。
+- **验证**: `./mvnw clean compile` BUILD SUCCESS
+
+### Phase 2.2 — JWT 库清理
+
+- **操作**: 移除 `io.jsonwebtoken:jjwt:0.12.6` (root pom properties + dependencyManagement + common-starter dependency)
+- **修改文件**: `pom.xml`, `mallchat-tools/mallchat-common-starter/pom.xml`
+- **思路**: 项目实际使用 `com.auth0:java-jwt:3.19.0` (`JwtUtils.java` 中 `com.auth0.jwt.JWT`)。jjwt 从未被引用（0 个 Java 文件 import io.jsonwebtoken），升级到 0.12.6 是无用功。auth0 java-jwt 3.19.0 独立于 Spring/Jakarta EE，天然兼容 SB3，无需改写。
+- **计划偏差**: 原计划误认为代码用 jjwt 0.9.x → 0.12.x 需要 API 重写，实际代码用 auth0，免去了 JwtUtils 重写。
+
+### Phase 2.3 — JUnit 4 → JUnit 5
+
+- **操作**:
+  - `chat-server/pom.xml`: junit:junit (JUnit 4) + spring-test:5.3.19 → spring-boot-starter-test (含 JUnit Jupiter)
+  - `DaoTest.java`: `@RunWith(SpringRunner.class)` → `@ExtendWith(SpringExtension.class)`, `org.junit.Test` → `org.junit.jupiter.api.Test`
+  - `SensitiveTest.java`: `org.junit.Test` → `org.junit.jupiter.api.Test`
+- **修改文件**: `chat-server/pom.xml`, `DaoTest.java`, `SensitiveTest.java`
+- **思路**: SB 3.3.5 的 spring-boot-starter-test 默认包含 JUnit Jupiter，同时排除 vintage-engine（JUnit 4 兼容层）。旧 pom 中 junit:junit + spring-test:5.3.19 是 SB2 时代的硬编码依赖，不兼容 JUnit 5 注解。
+- **验证**: `./mvnw test-compile` BUILD SUCCESS
+
+### Phase 2.4 — 收尾
+
+- **操作**: Git 提交 `080d137` (86 files, +379/-443)
+- **新增**: `OpenApiConfig.java`, `.gitignore`
+- **删除**: `SwaggerConfig.java`, 4 个 Swagger 桩类
