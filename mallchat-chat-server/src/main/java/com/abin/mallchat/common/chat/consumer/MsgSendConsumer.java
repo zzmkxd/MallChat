@@ -1,5 +1,6 @@
 package com.abin.mallchat.common.chat.consumer;
 
+import lombok.RequiredArgsConstructor;
 import com.abin.mallchat.common.chat.dao.ContactDao;
 import com.abin.mallchat.common.chat.dao.MessageDao;
 import com.abin.mallchat.common.chat.dao.RoomDao;
@@ -23,7 +24,6 @@ import com.abin.mallchat.common.user.service.cache.UserCache;
 import com.abin.mallchat.common.user.service.impl.PushService;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
@@ -38,36 +38,23 @@ import java.util.Objects;
  * Date: 2023-08-12
  */
 @RocketMQMessageListener(consumerGroup = MQConstant.SEND_MSG_GROUP, topic = MQConstant.SEND_MSG_TOPIC)
+@RequiredArgsConstructor
 @Component
-public class MsgSendConsumer implements RocketMQListener<MsgSendMessageDTO> {
-    @Autowired
-    private WebSocketService webSocketService;
-    @Autowired
-    private ChatService chatService;
-    @Autowired
-    private MessageDao messageDao;
-    @Autowired
-    private IChatAIService openAIService;
-    @Autowired
-    WeChatMsgOperationService weChatMsgOperationService;
-    @Autowired
-    private RoomCache roomCache;
-    @Autowired
-    private RoomDao roomDao;
-    @Autowired
-    private GroupMemberCache groupMemberCache;
-    @Autowired
-    private UserCache userCache;
-    @Autowired
-    private RoomFriendDao roomFriendDao;
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
-    @Autowired
-    private ContactDao contactDao;
-    @Autowired
-    private HotRoomCache hotRoomCache;
-    @Autowired
-    private PushService pushService;
+public class MsgSendConsumer implements RocketMQListener<MsgSendMessageDTO> {    
+    
+    private final WebSocketService webSocketService;
+    private final ChatService chatService;
+    private final MessageDao messageDao;
+    private final IChatAIService openAIService;    final WeChatMsgOperationService weChatMsgOperationService;
+    private final RoomCache roomCache;
+    private final RoomDao roomDao;
+    private final GroupMemberCache groupMemberCache;
+    private final UserCache userCache;
+    private final RoomFriendDao roomFriendDao;
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final ContactDao contactDao;
+    private final HotRoomCache hotRoomCache;
+    private final PushService pushService;
 
     @Override
     public void onMessage(MsgSendMessageDTO dto) {

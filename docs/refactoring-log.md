@@ -88,22 +88,23 @@
 
 | # | 时间 | 步骤 | 状态 | 修改文件 | 操作摘要 |
 |---|------|------|------|---------|---------|
-| 1 | | 3.1.1 | ⏳ | Controller 层 (7个) | @Autowired 字段注入 → 构造器注入 |
-| 2 | | 3.1.2 | ⏳ | Chat Service 层 | @Autowired 字段注入 → 构造器注入 |
-| 3 | | 3.1.3 | ⏳ | User Service 层 | @Autowired 字段注入 → 构造器注入 |
-| 4 | | 3.1.4 | ⏳ | Common Service 层 | @Autowired 字段注入 → 构造器注入 |
-| 5 | | 3.1.5 | ⏳ | AI Service 层 | @Autowired 字段注入 → 构造器注入 |
-| 6 | | 3.1.6 | ⏳ | Consumer 层 | @Autowired 字段注入 → 构造器注入 |
-| 7 | | 3.1.7 | ⏳ | Event Listener 层 | @Autowired 字段注入 → 构造器注入 |
-| 8 | | 3.1.8 | ⏳ | Config 层 | 保持 @Bean 方法不变 |
-| 9 | | 3.1.9 | ⏳ | — | 验证 `./mvnw clean compile` |
-| 10 | | 3.2.1 | ⏳ | `DateUtils.java` | Calendar → ChronoUnit |
-| 11 | | 3.2.2 | ⏳ | `User.java` | Date → LocalDateTime |
-| 12 | | 3.2.3 | ⏳ | `Message.java` | Date → LocalDateTime |
-| 13 | | 3.2.4 | ⏳ | 其余 Entity | Date → LocalDateTime |
-| 14 | | 3.2.5 | ⏳ | DAO 层 | Date → LocalDateTime 适配 |
-| 15 | | 3.2.6 | ⏳ | Service 层 | Date → LocalDateTime 适配 |
-| 16 | | 3.2.7 | ⏳ | `JwtUtils.java` | jjwt + LocalDateTime |
+| 1 | 2026-05-25 | 3.1.1~8 | ✅ | 72 个文件 (含6例外) | @Autowired→@RequiredArgsConstructor+private final (perl批量) |
+| 2 | 2026-05-25 | 3.1.9 | ✅ | — | `./mvnw clean compile` BUILD SUCCESS |
+| 3 | | 3.2.1 | ⏳ | `DateUtils.java` | Calendar → ChronoUnit |
+| 4 | | 3.2.2 | ⏳ | `User.java` | Date → LocalDateTime |
+| 5 | | 3.2.3 | ⏳ | `Message.java` | Date → LocalDateTime |
+| 6 | | 3.2.4 | ⏳ | 其余 Entity | Date → LocalDateTime |
+| 7 | | 3.2.5 | ⏳ | DAO 层 | Date → LocalDateTime 适配 |
+| 8 | | 3.2.6 | ⏳ | Service 层 | Date → LocalDateTime 适配 |
+| 9 | | 3.2.7 | ⏳ | — | 跳过 (项目用 auth0 jwt 非 jjwt) |
+| 10 | | 3.2.8 | ⏳ | `MinIOTemplate.java` | Date → LocalDateTime |
+| 11 | | 3.2.9 | ⏳ | `application.yml` | 确认 jackson 序列化设置 |
+| 12 | | 3.2.10 | ⏳ | — | 验证 `./mvnw clean compile` |
+| 13 | 2026-05-25 | 3.3.1 | ✅ | `ChatMemberStatisticResp.java` | 移除 @Deprecated totalNum (零引用) |
+| 14 | 2026-05-25 | 3.3.2 | ✅ | `ChatGLM2Handler.java` | TODO→方法描述 Javadoc |
+| 15 | 2026-05-25 | 3.3.3 | ⏭️ | `GroupMemberServiceImpl.java` | 保留 TODO (功能 backlog，非重构范围) |
+| 16 | 2026-05-25 | 3.3.4 | ✅ | `logback.xml` | 添加 AsyncAppender 异步日志 |
+| 17 | 2026-05-25 | 3.3.5 | ⏳ | — | Git 提交 Phase 3 |
 | 17 | | 3.2.8 | ⏳ | `MinIOTemplate.java` | Date → LocalDateTime |
 | 18 | | 3.2.9 | ⏳ | `application.yml` | write-dates-as-timestamps: false |
 | 19 | | 3.2.10 | ⏳ | — | 验证 `./mvnw clean compile` |

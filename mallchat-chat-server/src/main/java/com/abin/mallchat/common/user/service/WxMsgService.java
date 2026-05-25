@@ -12,12 +12,12 @@ import com.abin.mallchat.common.user.service.adapter.TextBuilder;
 import com.abin.mallchat.common.user.service.adapter.UserAdapter;
 import com.abin.mallchat.transaction.service.MQProducer;
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -33,19 +33,14 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class WxMsgService {
     /**
      * 用户的openId和前端登录场景code的映射关系
      */
     private static final String URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
     @Value("${wx.mp.callback}")
-    private String callback;
-    @Autowired
-    private UserDao userDao;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private MQProducer mqProducer;
+    private String callback;    private final UserDao userDao;    private final UserService userService;    private final MQProducer mqProducer;
 
     public WxMpXmlOutMessage scan(WxMpService wxMpService, WxMpXmlMessage wxMpXmlMessage) {
         String openid = wxMpXmlMessage.getFromUser();

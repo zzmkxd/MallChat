@@ -26,10 +26,11 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import lombok.SneakyThrows;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -50,6 +51,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class WebSocketServiceImpl implements WebSocketService {
 
     private static final Duration EXPIRE_TIME = Duration.ofHours(1);
@@ -77,24 +79,10 @@ public class WebSocketServiceImpl implements WebSocketService {
     /**
      * redis保存loginCode的key
      */
-    private static final String LOGIN_CODE = "loginCode";
-    @Autowired
-    private WxMpService wxMpService;
-    @Autowired
-    private LoginService loginService;
-    @Autowired
-    private UserDao userDao;
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
+    private static final String LOGIN_CODE = "loginCode";    private final WxMpService wxMpService;    private final LoginService loginService;    private final UserDao userDao;    private final ApplicationEventPublisher applicationEventPublisher;
     @Autowired
     @Qualifier(ThreadPoolConfig.WS_EXECUTOR)
-    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
-    @Autowired
-    private UserCache userCache;
-    @Autowired
-    private IRoleService iRoleService;
-    @Autowired
-    private MQProducer mqProducer;
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;    private final UserCache userCache;    private final IRoleService iRoleService;    private final MQProducer mqProducer;
 
     /**
      * 处理用户登录请求，需要返回一张带code的二维码

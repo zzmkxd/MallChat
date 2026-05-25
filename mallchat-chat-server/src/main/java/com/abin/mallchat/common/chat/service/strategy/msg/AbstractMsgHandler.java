@@ -1,5 +1,7 @@
 package com.abin.mallchat.common.chat.service.strategy.msg;
 
+import lombok.NoArgsConstructor;
+
 import cn.hutool.core.bean.BeanUtil;
 import com.abin.mallchat.common.chat.dao.MessageDao;
 import com.abin.mallchat.common.chat.domain.entity.Message;
@@ -18,6 +20,7 @@ import java.lang.reflect.ParameterizedType;
  * Author: <a href="https://github.com/zongzibinbin">abin</a>
  * Date: 2023-06-04
  */
+@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public abstract class AbstractMsgHandler<Req> {
     @Autowired
     private MessageDao messageDao;

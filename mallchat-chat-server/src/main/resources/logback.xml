@@ -55,11 +55,18 @@
         </rollingPolicy>
     </appender>
 
-    <root level="info">
-        <!--文件输出-->
+    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="fileAppender"/>
+    </appender>
+    <appender name="ASYNC_ERROR" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="fileError"/>
-        <!--制台输出-->
+    </appender>
+
+    <root level="info">
+        <!--异步文件输出-->
+        <appender-ref ref="ASYNC_FILE"/>
+        <appender-ref ref="ASYNC_ERROR"/>
+        <!--控制台输出-->
         <appender-ref ref="STDOUT"/>
     </root>
 

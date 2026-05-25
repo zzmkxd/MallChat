@@ -14,8 +14,8 @@ import com.abin.mallchat.common.user.domain.entity.User;
 import com.abin.mallchat.common.user.service.IpService;
 import com.abin.mallchat.common.user.service.cache.UserCache;
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -32,17 +32,13 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class IpServiceImpl implements IpService, DisposableBean {
     private static final ExecutorService EXECUTOR = new ThreadPoolExecutor(1, 1,
             0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<>(500),
             new NamedThreadFactory("refresh-ipDetail", null, false,
-                    GlobalUncaughtExceptionHandler.getInstance()));
-
-    @Autowired
-    private UserDao userDao;
-    @Autowired
-    private UserCache userCache;
+                    GlobalUncaughtExceptionHandler.getInstance()));    private final UserDao userDao;    private final UserCache userCache;
 
 
     @Override

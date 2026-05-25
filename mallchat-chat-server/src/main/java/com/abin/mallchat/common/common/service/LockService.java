@@ -1,36 +1,32 @@
 package com.abin.mallchat.common.common.service;
-
-import com.abin.mallchat.common.common.exception.BusinessException;
-import com.abin.mallchat.common.common.exception.CommonErrorEnum;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
-
-@Service
+    import com.abin.mallchat.common.common.exception.BusinessException;
+    import com.abin.mallchat.common.common.exception.CommonErrorEnum;
+    import lombok.SneakyThrows;
+    import lombok.RequiredArgsConstructor;
+    import lombok.extern.slf4j.Slf4j;
+    import org.redisson.api.RLock;
+    import org.redisson.api.RedissonClient;
+    import org.springframework.stereotype.Service;
+    import java.util.concurrent.TimeUnit;
+    import java.util.function.Supplier;
+    @Service
 @Slf4j
-public class LockService {
-
-    @Autowired
-    private RedissonClient redissonClient;
-
+@RequiredArgsConstructor
+public class LockService {    
+    private final RedissonClient redissonClient;
     public <T> T executeWithLockThrows(String key, int waitTime, TimeUnit unit, SupplierThrow<T> supplier) throws Throwable {
         RLock lock = redissonClient.getLock(key);
-        boolean lockSuccess = lock.tryLock(waitTime, unit);
-        if (!lockSuccess) {
+    boolean lockSuccess = lock.tryLock(waitTime, unit);
+    if (!lockSuccess) {
             throw new BusinessException(CommonErrorEnum.LOCK_LIMIT);
-        }
+    }
         try {
-            return supplier.get();//执行锁内的代码逻辑
+            return supplier.get();
+    //执行锁内的代码逻辑
         } finally {
             if (lock.isLocked() && lock.isHeldByCurrentThread()) {
                 lock.unlock();
-            }
+    }
         }
     }
 

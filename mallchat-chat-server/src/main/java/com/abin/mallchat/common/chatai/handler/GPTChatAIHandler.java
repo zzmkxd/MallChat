@@ -16,9 +16,9 @@ import com.abin.mallchat.common.common.utils.DateUtils;
 import com.abin.mallchat.common.common.utils.RedisUtils;
 import com.abin.mallchat.common.user.domain.vo.response.user.UserInfoResp;
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -30,14 +30,12 @@ import static com.abin.mallchat.common.common.service.frequencycontrol.Frequency
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class GPTChatAIHandler extends AbstractChatAIHandler {
     /**
      * GPTChatAIHandler限流前缀
      */
-    private static final String CHAT_FREQUENCY_PREFIX = "GPTChatAIHandler";
-
-    @Autowired
-    private ChatGPTProperties chatGPTProperties;
+    private static final String CHAT_FREQUENCY_PREFIX = "GPTChatAIHandler";    private final ChatGPTProperties chatGPTProperties;
 
     private static String AI_NAME;
 

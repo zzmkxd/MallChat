@@ -43,8 +43,8 @@ import com.abin.mallchat.common.user.domain.vo.response.ws.ChatMemberResp;
 import com.abin.mallchat.common.user.service.IRoleService;
 import com.abin.mallchat.common.user.service.cache.UserCache;
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -61,40 +61,9 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
-    public static final long ROOM_GROUP_ID = 1L;
-    @Autowired
-    private MessageDao messageDao;
-    @Autowired
-    private UserDao userDao;
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
-    @Autowired
-    private UserCache userCache;
-    @Autowired
-    private MemberAdapter memberAdapter;
-    @Autowired
-    private RoomDao roomDao;
-    @Autowired
-    private MessageMarkDao messageMarkDao;
-    @Autowired
-    private RoomFriendDao roomFriendDao;
-    @Autowired
-    private IRoleService iRoleService;
-    @Autowired
-    private RecallMsgHandler recallMsgHandler;
-    @Autowired
-    private ContactService contactService;
-    @Autowired
-    private ContactDao contactDao;
-    @Autowired
-    private RoomCache roomCache;
-    @Autowired
-    private GroupMemberDao groupMemberDao;
-    @Autowired
-    private RoomGroupCache roomGroupCache;
-    @Autowired
-    private RoomGroupDao roomGroupDao;
+    public static final long ROOM_GROUP_ID = 1L;    private final MessageDao messageDao;    private final UserDao userDao;    private final ApplicationEventPublisher applicationEventPublisher;    private final UserCache userCache;    private final MemberAdapter memberAdapter;    private final RoomDao roomDao;    private final MessageMarkDao messageMarkDao;    private final RoomFriendDao roomFriendDao;    private final IRoleService iRoleService;    private final RecallMsgHandler recallMsgHandler;    private final ContactService contactService;    private final ContactDao contactDao;    private final RoomCache roomCache;    private final GroupMemberDao groupMemberDao;    private final RoomGroupCache roomGroupCache;    private final RoomGroupDao roomGroupDao;
 
     /**
      * 发送消息

@@ -1,5 +1,7 @@
 package com.abin.mallchat.transaction.service;
 
+import lombok.RequiredArgsConstructor;
+
 import com.abin.mallchat.transaction.annotation.SecureInvoke;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.messaging.support.MessageBuilder;
  * Author: <a href="https://github.com/zongzibinbin">abin</a>
  * Date: 2023-08-12
  */
+@RequiredArgsConstructor
 public class MQProducer {
 
     @Autowired

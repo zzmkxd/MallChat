@@ -13,9 +13,9 @@ import com.abin.mallchat.common.common.service.frequencycontrol.FrequencyControl
 import com.abin.mallchat.common.common.utils.RedisUtils;
 import com.abin.mallchat.common.user.domain.vo.response.user.UserInfoResp;
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -30,6 +30,7 @@ import static com.abin.mallchat.common.common.service.frequencycontrol.Frequency
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class ChatGLM2Handler extends AbstractChatAIHandler {
     /**
      * ChatGLM2Handler限流前缀
@@ -47,10 +48,7 @@ public class ChatGLM2Handler extends AbstractChatAIHandler {
 
     private static final Random RANDOM = new Random();
 
-    private static String AI_NAME;
-
-    @Autowired
-    private ChatGLM2Properties glm2Properties;
+    private static String AI_NAME;    private final ChatGLM2Properties glm2Properties;
 
     @Override
     protected void init() {
@@ -99,7 +97,7 @@ public class ChatGLM2Handler extends AbstractChatAIHandler {
     }
 
     /**
-     * TODO
+     * 发送HTTP请求到ChatGLM2并解析响应文本
      *
      * @param gptRequestDTO
      * @return

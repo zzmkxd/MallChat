@@ -1,26 +1,22 @@
 package com.abin.mallchat.common.user.controller;
-
-
-import com.abin.mallchat.common.common.domain.vo.response.ApiResult;
-import com.abin.mallchat.common.common.utils.AssertUtil;
-import com.abin.mallchat.common.common.utils.RequestHolder;
-import com.abin.mallchat.common.user.domain.dto.ItemInfoDTO;
-import com.abin.mallchat.common.user.domain.dto.SummeryInfoDTO;
-import com.abin.mallchat.common.user.domain.enums.RoleEnum;
-import com.abin.mallchat.common.user.domain.vo.request.user.*;
-import com.abin.mallchat.common.user.domain.vo.response.user.BadgeResp;
-import com.abin.mallchat.common.user.domain.vo.response.user.UserInfoResp;
-import com.abin.mallchat.common.user.service.IRoleService;
-import com.abin.mallchat.common.user.service.UserService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
-import java.util.List;
-
-/**
+    import lombok.RequiredArgsConstructor;
+    import com.abin.mallchat.common.common.domain.vo.response.ApiResult;
+    import com.abin.mallchat.common.common.utils.AssertUtil;
+    import com.abin.mallchat.common.common.utils.RequestHolder;
+    import com.abin.mallchat.common.user.domain.dto.ItemInfoDTO;
+    import com.abin.mallchat.common.user.domain.dto.SummeryInfoDTO;
+    import com.abin.mallchat.common.user.domain.enums.RoleEnum;
+    import com.abin.mallchat.common.user.domain.vo.request.user.*;
+    import com.abin.mallchat.common.user.domain.vo.response.user.BadgeResp;
+    import com.abin.mallchat.common.user.domain.vo.response.user.UserInfoResp;
+    import com.abin.mallchat.common.user.service.IRoleService;
+    import com.abin.mallchat.common.user.service.UserService;
+    import io.swagger.v3.oas.annotations.tags.Tag;
+    import io.swagger.v3.oas.annotations.Operation;
+    import org.springframework.web.bind.annotation.*;
+    import jakarta.validation.Valid;
+    import java.util.List;
+    /**
  * <p>
  * 用户表 前端控制器
  * </p>
@@ -31,12 +27,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/capi/user")
 @Tag(name = "用户管理相关接口")
-public class UserController {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private IRoleService iRoleService;
-
+@RequiredArgsConstructor
+public class UserController {    
+    private final UserService userService;
+    private final IRoleService iRoleService;
     @GetMapping("/userInfo")
     @Operation(summary = "用户详情")
     public ApiResult<UserInfoResp> getUserInfo() {
@@ -59,7 +53,7 @@ public class UserController {
     @Operation(summary = "修改用户名")
     public ApiResult<Void> modifyName(@Valid @RequestBody ModifyNameReq req) {
         userService.modifyName(RequestHolder.get().getUid(), req);
-        return ApiResult.success();
+    return ApiResult.success();
     }
 
     @GetMapping("/badges")
@@ -72,17 +66,17 @@ public class UserController {
     @Operation(summary = "佩戴徽章")
     public ApiResult<Void> wearingBadge(@Valid @RequestBody WearingBadgeReq req) {
         userService.wearingBadge(RequestHolder.get().getUid(), req);
-        return ApiResult.success();
+    return ApiResult.success();
     }
 
     @PutMapping("/black")
     @Operation(summary = "拉黑用户")
     public ApiResult<Void> black(@Valid @RequestBody BlackReq req) {
         Long uid = RequestHolder.get().getUid();
-        boolean hasPower = iRoleService.hasPower(uid, RoleEnum.ADMIN);
-        AssertUtil.isTrue(hasPower, "没有权限");
-        userService.black(req);
-        return ApiResult.success();
+    boolean hasPower = iRoleService.hasPower(uid, RoleEnum.ADMIN);
+    AssertUtil.isTrue(hasPower, "没有权限");
+    userService.black(req);
+    return ApiResult.success();
     }
 }
 

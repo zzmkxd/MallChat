@@ -1,29 +1,25 @@
 package com.abin.mallchat.common.chat.controller;
-
-
-import com.abin.mallchat.common.chat.domain.dto.MsgReadInfoDTO;
-import com.abin.mallchat.common.chat.domain.vo.request.*;
-import com.abin.mallchat.common.chat.domain.vo.response.ChatMessageReadResp;
-import com.abin.mallchat.common.chat.domain.vo.response.ChatMessageResp;
-import com.abin.mallchat.common.chat.service.ChatService;
-import com.abin.mallchat.common.common.annotation.FrequencyControl;
-import com.abin.mallchat.common.common.domain.vo.response.ApiResult;
-import com.abin.mallchat.common.common.domain.vo.response.CursorPageBaseResp;
-import com.abin.mallchat.common.common.utils.RequestHolder;
-import com.abin.mallchat.common.user.domain.enums.BlackTypeEnum;
-import com.abin.mallchat.common.user.service.cache.UserCache;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Operation;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-/**
+    import com.abin.mallchat.common.chat.domain.dto.MsgReadInfoDTO;
+    import com.abin.mallchat.common.chat.domain.vo.request.*;
+    import com.abin.mallchat.common.chat.domain.vo.response.ChatMessageReadResp;
+    import com.abin.mallchat.common.chat.domain.vo.response.ChatMessageResp;
+    import com.abin.mallchat.common.chat.service.ChatService;
+    import com.abin.mallchat.common.common.annotation.FrequencyControl;
+    import com.abin.mallchat.common.common.domain.vo.response.ApiResult;
+    import com.abin.mallchat.common.common.domain.vo.response.CursorPageBaseResp;
+    import com.abin.mallchat.common.common.utils.RequestHolder;
+    import com.abin.mallchat.common.user.domain.enums.BlackTypeEnum;
+    import com.abin.mallchat.common.user.service.cache.UserCache;
+    import io.swagger.v3.oas.annotations.tags.Tag;
+    import io.swagger.v3.oas.annotations.Operation;
+    import lombok.extern.slf4j.Slf4j;
+    import lombok.RequiredArgsConstructor;
+    import org.springframework.web.bind.annotation.*;
+    import jakarta.validation.Valid;
+    import java.util.Collection;
+    import java.util.HashSet;
+    import java.util.Set;
+    /**
  * <p>
  * 群聊相关接口
  * </p>
@@ -35,12 +31,10 @@ import java.util.Set;
 @RequestMapping("/capi/chat")
 @Tag(name = "聊天室相关接口")
 @Slf4j
-public class ChatController {
-    @Autowired
-    private ChatService chatService;
-    @Autowired
-    private UserCache userCache;
-
+@RequiredArgsConstructor
+public class ChatController {    
+    private final ChatService chatService;
+    private final UserCache userCache;
     private Set<String> getBlackUidSet() {
         return userCache.getBlackMap().getOrDefault(BlackTypeEnum.UID.getType(), new HashSet<>());
     }
@@ -50,13 +44,13 @@ public class ChatController {
 //    @FrequencyControl(time = 120, count = 20, target = FrequencyControl.Target.IP)
     public ApiResult<CursorPageBaseResp<ChatMessageResp>> getMsgPage(@Valid ChatMessagePageReq request) {
         CursorPageBaseResp<ChatMessageResp> msgPage = chatService.getMsgPage(request, RequestHolder.get().getUid());
-        filterBlackMsg(msgPage);
-        return ApiResult.success(msgPage);
+    filterBlackMsg(msgPage);
+    return ApiResult.success(msgPage);
     }
 
     private void filterBlackMsg(CursorPageBaseResp<ChatMessageResp> memberPage) {
         Set<String> blackMembers = getBlackUidSet();
-        memberPage.getList().removeIf(a -> blackMembers.contains(a.getFromUser().getUid().toString()));
+    memberPage.getList().removeIf(a -> blackMembers.contains(a.getFromUser().getUid().toString()));
     }
 
     @PostMapping("/msg")
@@ -66,7 +60,7 @@ public class ChatController {
     @FrequencyControl(time = 60, count = 10, target = FrequencyControl.Target.UID)
     public ApiResult<ChatMessageResp> sendMsg(@Valid @RequestBody ChatMessageReq request) {
         Long msgId = chatService.sendMsg(request, RequestHolder.get().getUid());
-        //返回完整消息格式，方便前端展示
+    //返回完整消息格式，方便前端展示
         return ApiResult.success(chatService.getMsgResp(msgId, RequestHolder.get().getUid()));
     }
 
@@ -75,7 +69,7 @@ public class ChatController {
     @FrequencyControl(time = 10, count = 5, target = FrequencyControl.Target.UID)
     public ApiResult<Void> setMsgMark(@Valid @RequestBody ChatMessageMarkReq request) {
         chatService.setMsgMark(RequestHolder.get().getUid(), request);
-        return ApiResult.success();
+    return ApiResult.success();
     }
 
     @PutMapping("/msg/recall")
@@ -83,29 +77,29 @@ public class ChatController {
     @FrequencyControl(time = 20, count = 3, target = FrequencyControl.Target.UID)
     public ApiResult<Void> recallMsg(@Valid @RequestBody ChatMessageBaseReq request) {
         chatService.recallMsg(RequestHolder.get().getUid(), request);
-        return ApiResult.success();
+    return ApiResult.success();
     }
 
     @GetMapping("/msg/read/page")
     @Operation(summary = "消息的已读未读列表")
     public ApiResult<CursorPageBaseResp<ChatMessageReadResp>> getReadPage(@Valid ChatMessageReadReq request) {
         Long uid = RequestHolder.get().getUid();
-        return ApiResult.success(chatService.getReadPage(uid, request));
+    return ApiResult.success(chatService.getReadPage(uid, request));
     }
 
     @GetMapping("/msg/read")
     @Operation(summary = "获取消息的已读未读总数")
     public ApiResult<Collection<MsgReadInfoDTO>> getReadInfo(@Valid ChatMessageReadInfoReq request) {
         Long uid = RequestHolder.get().getUid();
-        return ApiResult.success(chatService.getMsgReadInfo(uid, request));
+    return ApiResult.success(chatService.getMsgReadInfo(uid, request));
     }
 
     @PutMapping("/msg/read")
     @Operation(summary = "消息阅读上报")
     public ApiResult<Void> msgRead(@Valid @RequestBody ChatMessageMemberReq request) {
         Long uid = RequestHolder.get().getUid();
-        chatService.msgRead(uid, request);
-        return ApiResult.success();
+    chatService.msgRead(uid, request);
+    return ApiResult.success();
     }
 }
 

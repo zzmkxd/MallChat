@@ -9,10 +9,10 @@ import com.abin.mallchat.common.common.service.frequencycontrol.FrequencyControl
 import com.abin.mallchat.common.user.domain.entity.User;
 import com.abin.mallchat.common.user.service.cache.UserCache;
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -25,6 +25,7 @@ import static com.abin.mallchat.common.common.service.frequencycontrol.Frequency
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class WeChatMsgOperationServiceImpl implements WeChatMsgOperationService {
 
     private static final ExecutorService executor = new ThreadPoolExecutor(1, 10, 3000L,
@@ -36,13 +37,7 @@ public class WeChatMsgOperationServiceImpl implements WeChatMsgOperationService 
     // at消息的微信推送模板id
     private final String atMsgPublishTemplateId = "Xd7sWPZsuWa0UmpvLaZPvaJVjNj1KjEa0zLOm5_Z7IU";
 
-    private final String WE_CHAT_MSG_COLOR = "#A349A4";
-
-    @Autowired
-    private UserCache userCache;
-
-    @Autowired
-    WxMpService wxMpService;
+    private final String WE_CHAT_MSG_COLOR = "#A349A4";    private final UserCache userCache;    final WxMpService wxMpService;
 
     @Override
     public void publishChatMsgToWeChatUser(long senderUid, List<Long> receiverUidList, String msg) {

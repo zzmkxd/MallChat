@@ -9,8 +9,9 @@ import com.abin.mallchat.common.common.config.ThreadPoolConfig;
 import com.abin.mallchat.common.user.domain.vo.response.user.UserInfoResp;
 import com.abin.mallchat.common.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -18,14 +19,13 @@ import jakarta.annotation.PostConstruct;
 import java.util.Collections;
 
 @Slf4j
+
+@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public abstract class AbstractChatAIHandler {
     @Autowired
     @Qualifier(ThreadPoolConfig.AICHAT_EXECUTOR)
-    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
-
-    @Autowired
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;    
     protected ChatService chatService;
-    @Autowired
     protected UserService userService;
 
     @PostConstruct

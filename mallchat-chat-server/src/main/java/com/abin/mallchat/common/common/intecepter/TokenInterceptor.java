@@ -4,8 +4,8 @@ import com.abin.mallchat.common.common.constant.MDCKey;
 import com.abin.mallchat.common.common.exception.HttpErrorEnum;
 import com.abin.mallchat.common.user.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -18,14 +18,12 @@ import java.util.Optional;
 @Order(-2)
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class TokenInterceptor implements HandlerInterceptor {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_SCHEMA = "Bearer ";
-    public static final String ATTRIBUTE_UID = "uid";
-
-    @Autowired
-    private LoginService loginService;
+    public static final String ATTRIBUTE_UID = "uid";    private final LoginService loginService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

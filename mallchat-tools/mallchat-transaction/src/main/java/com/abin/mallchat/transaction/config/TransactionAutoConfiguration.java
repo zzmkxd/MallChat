@@ -1,6 +1,9 @@
 package com.abin.mallchat.transaction.config;
 
+import lombok.RequiredArgsConstructor;
+
 import com.abin.mallchat.transaction.annotation.SecureInvokeConfigurer;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.abin.mallchat.transaction.aspect.SecureInvokeAspect;
 import com.abin.mallchat.transaction.dao.SecureInvokeRecordDao;
 import com.abin.mallchat.transaction.mapper.SecureInvokeRecordMapper;
@@ -8,7 +11,6 @@ import com.abin.mallchat.transaction.service.MQProducer;
 import com.abin.mallchat.transaction.service.SecureInvokeService;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
 @EnableScheduling
 @MapperScan(basePackageClasses = SecureInvokeRecordMapper.class)
 @Import({SecureInvokeAspect.class, SecureInvokeRecordDao.class})
+@RequiredArgsConstructor
 public class TransactionAutoConfiguration {
 
     @Nullable

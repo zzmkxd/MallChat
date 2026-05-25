@@ -1,5 +1,8 @@
 package com.abin.mallchat.common.chat.dao;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.abin.mallchat.common.chat.domain.entity.Contact;
@@ -13,7 +16,6 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,7 @@ import static com.abin.mallchat.common.chat.domain.enums.GroupRoleEnum.ADMIN_LIS
  * @since 2023-07-16
  */
 @Service
+@RequiredArgsConstructor
 public class GroupMemberDao extends ServiceImpl<GroupMemberMapper, GroupMember> {
 
     @Autowired

@@ -3,6 +3,7 @@ package com.abin.frequencycontrol.intecepter;
 import com.abin.frequencycontrol.exception.HttpErrorEnum;
 import com.abin.mallchat.common.MDCKey;
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @Order(-2)
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class TokenInterceptor implements HandlerInterceptor {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";

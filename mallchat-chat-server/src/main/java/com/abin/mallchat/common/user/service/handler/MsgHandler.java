@@ -1,42 +1,36 @@
 package com.abin.mallchat.common.user.service.handler;
-
-import cn.hutool.json.JSONUtil;
-import com.abin.mallchat.common.chat.dao.WxMsgDao;
-import com.abin.mallchat.common.chat.domain.entity.WxMsg;
-import com.abin.mallchat.common.user.service.adapter.TextBuilder;
-import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.common.session.WxSessionManager;
-import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
-import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.Map;
-
-import static me.chanjar.weixin.common.api.WxConsts.XmlMsgType;
-
-/**
+    import lombok.RequiredArgsConstructor;
+    import cn.hutool.json.JSONUtil;
+    import com.abin.mallchat.common.chat.dao.WxMsgDao;
+    import com.abin.mallchat.common.chat.domain.entity.WxMsg;
+    import com.abin.mallchat.common.user.service.adapter.TextBuilder;
+    import me.chanjar.weixin.common.error.WxErrorException;
+    import me.chanjar.weixin.common.session.WxSessionManager;
+    import me.chanjar.weixin.mp.api.WxMpService;
+    import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
+    import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+    import org.apache.commons.lang3.StringUtils;
+    import org.springframework.stereotype.Component;
+    import java.util.Map;
+    import static me.chanjar.weixin.common.api.WxConsts.XmlMsgType;
+    /**
  * @author <a href="https://github.com/binarywang">Binary Wang</a>
  */
 @Component
-public class MsgHandler extends AbstractHandler {
-
-    @Autowired
-    private WxMsgDao wxMsgDao;
-
+@RequiredArgsConstructor
+public class MsgHandler extends AbstractHandler {    
+    private final WxMsgDao wxMsgDao;
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
                                     Map<String, Object> context, WxMpService weixinService,
                                     WxSessionManager sessionManager) {
         if (true) {
             WxMsg msg = new WxMsg();
-            msg.setOpenId(wxMessage.getFromUser());
-            msg.setMsg(wxMessage.getContent());
-            wxMsgDao.save(msg);
-            return null;
-        }
+    msg.setOpenId(wxMessage.getFromUser());
+    msg.setMsg(wxMessage.getContent());
+    wxMsgDao.save(msg);
+    return null;
+    }
         if (!wxMessage.getMsgType().equals(XmlMsgType.EVENT)) {
             //可以选择将消息保存到本地
         }
@@ -49,16 +43,14 @@ public class MsgHandler extends AbstractHandler {
                 return WxMpXmlOutMessage.TRANSFER_CUSTOMER_SERVICE()
                         .fromUser(wxMessage.getToUser())
                         .toUser(wxMessage.getFromUser()).build();
-            }
+    }
         } catch (WxErrorException e) {
             e.printStackTrace();
-        }
+    }
 
         //组装回复消息
         String content = "收到信息内容：" + JSONUtil.toJsonStr(wxMessage);
-
-        return new TextBuilder().build(content, wxMessage, weixinService);
-
+    return new TextBuilder().build(content, wxMessage, weixinService);
     }
 
 }
