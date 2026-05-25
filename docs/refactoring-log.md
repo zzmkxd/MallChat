@@ -387,3 +387,37 @@
 - **操作**: Git 提交 `080d137` (86 files, +379/-443)
 - **新增**: `OpenApiConfig.java`, `.gitignore`
 - **删除**: `SwaggerConfig.java`, 4 个 Swagger 桩类
+
+---
+
+## Phase 3 详细变更
+
+### Phase 3.1 — @Autowired → 构造器注入
+
+- **操作**: perl 批量替换: `@Autowired\n    private` → `private final`, 添加 `@RequiredArgsConstructor`
+- **修改文件**: 72 个文件 (chat-server 70 + mallchat-tools 2)
+- **思路**: SB3 支持无 `@Autowired` 的构造器注入（唯一构造器时 Spring 自动装配）。Lombok 的 `@RequiredArgsConstructor` 为所有 `final` 字段生成构造器。批量方案验证可行后一次 perl 处理全部文件。
+- **坑1**: Windows CRLF 导致 perl `\n` 匹配失败，改用 `\R` (通用行尾符)
+- **坑2**: `@Autowired @Lazy/@Qualifier` 双注解场无法用正则匹配，手工处理
+- **坑3**: 父子类问题 — 父类 `@RequiredArgsConstructor` 生成的参数化构造器导致子类 `super()` 调用失败。3个父类 (`AbstractMsgHandler`, `AbstractChatAIHandler`, `AbstractMsgMarkStrategy`) 回退为字段注入 + `@NoArgsConstructor(access = PROTECTED)`
+- **保留字段注入** (6文件): 3个父类子类兼容 + `GroupMemberDao`/`UserBackpackServiceImpl`/`OssServiceImpl` (@Lazy 循环依赖)
+- **验证**: `./mvnw clean compile` BUILD SUCCESS
+
+### Phase 3.3 — 清理收尾
+
+- **3.3.1 移除 @Deprecated totalNum**: `ChatMemberStatisticResp.java` 中 `totalNum` 字段零引用，直接删除
+- **修改文件**: `ChatMemberStatisticResp.java`
+- **3.3.2 ChatGLM2Handler TODO**: 方法 `sendRequestToGPT` 已实现，Javadoc 只写了 "TODO"，改为实际方法描述
+- **修改文件**: `ChatGLM2Handler.java`
+- **3.3.3 GroupMemberServiceImpl TODO**: `// TODO 这里也可以告知群成员 群聊已被删除的消息` — 属功能增强建议，保留作为产品 backlog
+- **3.3.4 logback AsyncAppender**: 文件日志根路径改为 AsyncAppender 包装，高并发时避免日志写盘阻塞业务线程
+- **修改文件**: `logback.xml`
+- **验证**: `./mvnw clean compile` BUILD SUCCESS
+
+### 3.2 Date→LocalDateTime — 规划 (待执行)
+
+- **现状**: 35 文件使用 `java.util.Date`，18 个 Entity 中 `createTime`/`updateTime` 字段全部映射 MySQL `datetime(3)`
+- **唯一自定义方法**: `DateUtils.getEndTimeByToday()` (只有1个调用方: `GPTChatAIHandler`)
+- **关键风险**: Jackson 序列化 — `Date` + `write-dates-as-timestamps:true` 输出毫秒戳，`LocalDateTime` 同配置会输出数组。需 `jackson-datatype-jsr310` 模块保持时间戳输出
+- **JWT**: `JwtUtils` 的 `new Date()` 无需改动 (auth0 库接受 Date)
+- **执行计划**: java-time Jackson 配置 → Entity → DAO/VO/DTO → Utils → 编译验证
