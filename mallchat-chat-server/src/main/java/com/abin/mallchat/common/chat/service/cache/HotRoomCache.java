@@ -9,13 +9,13 @@ import com.abin.mallchat.common.common.utils.RedisUtils;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
  * Description: 全局房间
  * Author: <a href="https://github.com/zongzibinbin">abin</a>
- * Date: 2023-07-23
+ * LocalDateTime: 2023-07-23
  */
 @Component
 public class HotRoomCache {
@@ -36,7 +36,7 @@ public class HotRoomCache {
     /**
      * 更新热门群聊的最新时间
      */
-    public void refreshActiveTime(Long roomId, Date refreshTime) {
-        RedisUtils.zAdd(RedisKey.getKey(RedisKey.HOT_ROOM_ZET), roomId, (double) refreshTime.getTime());
+    public void refreshActiveTime(Long roomId, LocalDateTime refreshTime) {
+        RedisUtils.zAdd(RedisKey.getKey(RedisKey.HOT_ROOM_ZET), roomId, (double) refreshTime.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli());
     }
 }

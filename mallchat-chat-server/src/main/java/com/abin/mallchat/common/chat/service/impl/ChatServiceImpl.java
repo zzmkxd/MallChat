@@ -2,8 +2,6 @@ package com.abin.mallchat.common.chat.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.date.DateUnit;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Pair;
 import com.abin.mallchat.common.chat.dao.*;
 import com.abin.mallchat.common.chat.domain.dto.MsgReadInfoDTO;
@@ -42,6 +40,8 @@ import com.abin.mallchat.common.user.domain.enums.RoleEnum;
 import com.abin.mallchat.common.user.domain.vo.response.ws.ChatMemberResp;
 import com.abin.mallchat.common.user.service.IRoleService;
 import com.abin.mallchat.common.user.service.cache.UserCache;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -246,13 +246,13 @@ public class ChatServiceImpl implements ChatService {
         if (Objects.nonNull(contact)) {
             Contact update = new Contact();
             update.setId(contact.getId());
-            update.setReadTime(new Date());
+            update.setReadTime(LocalDateTime.now());
             contactDao.updateById(update);
         } else {
             Contact insert = new Contact();
             insert.setUid(uid);
             insert.setRoomId(request.getRoomId());
-            insert.setReadTime(new Date());
+            insert.setReadTime(LocalDateTime.now());
             contactDao.save(insert);
         }
     }
@@ -266,7 +266,7 @@ public class ChatServiceImpl implements ChatService {
         }
         boolean self = Objects.equals(uid, message.getFromUid());
         AssertUtil.isTrue(self, "抱歉,您没有权限");
-        long between = DateUtil.between(message.getCreateTime(), new Date(), DateUnit.MINUTE);
+        long between = ChronoUnit.MINUTES.between(message.getCreateTime(), LocalDateTime.now());
         AssertUtil.isTrue(between < 2, "覆水难收，超过2分钟的消息不能撤回哦~~");
     }
 

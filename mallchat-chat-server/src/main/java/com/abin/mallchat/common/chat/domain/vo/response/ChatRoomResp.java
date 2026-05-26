@@ -6,12 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Description: 群成员列表的成员信息
  * Author: <a href="https://github.com/zongzibinbin">abin</a>
- * Date: 2023-03-23
+ * LocalDateTime: 2023-03-23
  */
 @Data
 @Builder
@@ -31,7 +31,7 @@ public class ChatRoomResp {
     @Schema(description = "会话头像")
     private String avatar;
     @Schema(description = "房间最后活跃时间(用来排序)")
-    private Date activeTime;
+    private LocalDateTime activeTime;
     @Schema(description = "未读数")
     private Integer unreadCount;
 }

@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -53,7 +53,7 @@ public class Room implements Serializable {
      * 群最后消息的更新时间（热点群不需要写扩散，更新这里就行）
      */
     @TableField("active_time")
-    private Date activeTime;
+    private LocalDateTime activeTime;
 
     /**
      * 最后一条消息id
@@ -71,13 +71,13 @@ public class Room implements Serializable {
      * 创建时间
      */
     @TableField("create_time")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
     @TableField("update_time")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
 
     @JsonIgnore

@@ -6,12 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Description: 群成员列表的成员信息
  * Author: <a href="https://github.com/zongzibinbin">abin</a>
- * Date: 2023-03-23
+ * LocalDateTime: 2023-03-23
  */
 @Data
 @Builder
@@ -32,5 +32,5 @@ public class ChatMemberResp {
     private Integer roleId;
 
     @Schema(description = "最后一次上下线时间")
-    private Date lastOptTime;
+    private LocalDateTime lastOptTime;
 }

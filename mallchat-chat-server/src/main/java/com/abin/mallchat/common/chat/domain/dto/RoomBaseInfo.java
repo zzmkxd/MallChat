@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Description: 房间详情
  * Author: <a href="https://github.com/zongzibinbin">abin</a>
- * Date: 2023-07-22
+ * LocalDateTime: 2023-07-22
  */
 @Data
 public class RoomBaseInfo {
@@ -35,7 +35,7 @@ public class RoomBaseInfo {
      * 群最后消息的更新时间
      */
     @TableField("active_time")
-    private Date activeTime;
+    private LocalDateTime activeTime;
 
     /**
      * 最后一条消息id

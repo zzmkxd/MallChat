@@ -6,12 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Description:
  * Author: <a href="https://github.com/zongzibinbin">abin</a>
- * Date: 2023-03-19
+ * LocalDateTime: 2023-03-19
  */
 @Data
 @Builder
@@ -32,5 +32,5 @@ public class WSMemberChange {
     @Schema(description = "在线状态 1在线 2离线")
     private Integer activeStatus;
     @Schema(description = "最后一次上下线时间")
-    private Date lastOptTime;
+    private LocalDateTime lastOptTime;
 }

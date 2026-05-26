@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -90,7 +90,7 @@ public class ContactDao extends ServiceImpl<ContactMapper, Contact> {
     /**
      * 更新所有人的会话时间，没有就直接插入
      */
-    public void refreshOrCreateActiveTime(Long roomId, List<Long> memberUidList, Long msgId, Date activeTime) {
+    public void refreshOrCreateActiveTime(Long roomId, List<Long> memberUidList, Long msgId, LocalDateTime activeTime) {
         baseMapper.refreshOrCreateActiveTime(roomId, memberUidList, msgId, activeTime);
     }
 

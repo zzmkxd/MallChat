@@ -6,12 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Description: 消息撤回
  * Author: <a href="https://github.com/zongzibinbin">abin</a>
- * Date: 2023-06-04
+ * LocalDateTime: 2023-06-04
  */
 @Data
 @Builder
@@ -22,5 +22,5 @@ public class MsgRecall implements Serializable {
     //撤回消息的uid
     private Long recallUid;
     //撤回的时间点
-    private Date recallTime;
+    private LocalDateTime recallTime;
 }

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -19,7 +19,7 @@ import java.util.Date;
 @Service
 public class RoomDao extends ServiceImpl<RoomMapper, Room> implements IService<Room> {
 
-    public void refreshActiveTime(Long roomId, Long msgId, Date msgTime) {
+    public void refreshActiveTime(Long roomId, Long msgId, LocalDateTime msgTime) {
         lambdaUpdate()
                 .eq(Room::getId, roomId)
                 .set(Room::getLastMsgId, msgId)

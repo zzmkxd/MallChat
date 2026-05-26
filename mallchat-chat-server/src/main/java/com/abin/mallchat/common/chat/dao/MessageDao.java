@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWra
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -64,7 +64,7 @@ public class MessageDao extends ServiceImpl<MessageMapper, Message> {
                 .update();
     }
 
-    public Integer getUnReadCount(Long roomId, Date readTime) {
+    public Integer getUnReadCount(Long roomId, LocalDateTime readTime) {
         return lambdaQuery()
                 .eq(Message::getRoomId, roomId)
                 .gt(Objects.nonNull(readTime), Message::getCreateTime, readTime)

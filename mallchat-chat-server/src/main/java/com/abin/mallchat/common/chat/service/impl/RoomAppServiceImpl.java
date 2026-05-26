@@ -51,7 +51,10 @@ package com.abin.mallchat.common.chat.service.impl;
     import org.springframework.stereotype.Service;
     import org.springframework.transaction.annotation.Transactional;
     import org.springframework.util.CollectionUtils;
-    import java.util.*;
+    import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
     import java.util.function.Function;
     import java.util.stream.Collectors;
     /**
@@ -280,7 +283,7 @@ public class RoomAppServiceImpl implements RoomAppService {
     Room room = batch.get(roomId);
     contact.setLastMsgId(room.getLastMsgId());
     }
-            contact.setActiveTime(new Date(pair.getValue().longValue()));
+            contact.setActiveTime(Instant.ofEpochMilli(pair.getValue().longValue()).atZone(ZoneId.systemDefault()).toLocalDateTime());
     return contact;
     }).collect(Collectors.toList());
     }

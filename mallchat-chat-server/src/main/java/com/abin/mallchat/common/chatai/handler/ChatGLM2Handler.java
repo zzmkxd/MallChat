@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -135,14 +135,14 @@ public class ChatGLM2Handler extends AbstractChatAIHandler {
      */
     private Long userMinutesLater(Long uid) {
         // 获取用户最后聊天时间
-        Date lastChatTime = RedisUtils.get(RedisKey.getKey(USER_GLM2_TIME_LAST, uid), Date.class);
+        LocalDateTime lastChatTime = RedisUtils.get(RedisKey.getKey(USER_GLM2_TIME_LAST, uid), LocalDateTime.class);
         if (lastChatTime == null) {
             // 如果没有聊天记录，则可以立即聊天
             return 0L;
         }
         // 计算当前时间和上次聊天时间之间的时间差
         long now = System.currentTimeMillis();
-        long lastChatTimeMillis = lastChatTime.getTime();
+        long lastChatTimeMillis = lastChatTime.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli();
         long durationMillis = now - lastChatTimeMillis;
         long minutes = TimeUnit.MILLISECONDS.toMinutes(durationMillis);
         // 计算剩余等待时间

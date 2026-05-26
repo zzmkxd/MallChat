@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -70,7 +70,7 @@ public class User implements Serializable {
      * 最后上下线时间
      */
     @TableField("last_opt_time")
-    private Date lastOptTime;
+    private LocalDateTime lastOptTime;
 
     /**
      * 最后上下线时间
@@ -94,13 +94,13 @@ public class User implements Serializable {
      * 创建时间
      */
     @TableField("create_time")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
     @TableField("update_time")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     public void refreshIp(String ip) {
         if (ipInfo == null) {

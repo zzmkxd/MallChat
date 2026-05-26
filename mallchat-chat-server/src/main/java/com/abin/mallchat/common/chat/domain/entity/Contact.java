@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -47,13 +47,13 @@ public class Contact implements Serializable {
      * 阅读到的时间
      */
     @TableField("read_time")
-    private Date readTime;
+    private LocalDateTime readTime;
 
     /**
      * 会话内消息最后更新的时间(只有普通会话需要维护，全员会话不需要维护)
      */
     @TableField("active_time")
-    private Date activeTime;
+    private LocalDateTime activeTime;
 
     /**
      * 最后一条消息id
@@ -65,13 +65,13 @@ public class Contact implements Serializable {
      * 创建时间
      */
     @TableField("create_time")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
     @TableField("update_time")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
 
 }

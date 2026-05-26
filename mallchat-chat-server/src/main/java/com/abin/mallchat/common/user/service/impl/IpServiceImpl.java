@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Description: ip
  * Author: <a href="https://github.com/zongzibinbin">abin</a>
- * Date: 2023-04-18
+ * LocalDateTime: 2023-04-18
  */
 @Service
 @Slf4j
@@ -99,14 +99,14 @@ public class IpServiceImpl implements IpService, DisposableBean {
     //测试耗时结果 100次查询总耗时约100s，平均一次成功查询需要1s,可以接受
     //第99次成功,目前耗时：99545ms
     public static void main(String[] args) {
-        Date begin = new Date();
+        LocalDateTime begin = LocalDateTime.now();
         for (int i = 0; i < 100; i++) {
             int finalI = i;
             EXECUTOR.execute(() -> {
                 IpDetail ipDetail = TryGetIpDetailOrNullTreeTimes("113.90.36.126");
                 if (Objects.nonNull(ipDetail)) {
-                    Date date = new Date();
-                    System.out.println(String.format("第%d次成功,目前耗时：%dms", finalI, (date.getTime() - begin.getTime())));
+                    LocalDateTime date = LocalDateTime.now();
+                    System.out.println(String.format("第%d次成功,目前耗时：%dms", finalI, java.time.Duration.between(begin, date).toMillis()));
                 }
             });
         }

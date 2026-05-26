@@ -143,7 +143,7 @@ public class UserServiceImpl implements UserService {
     public List<ItemInfoDTO> getItemInfo(ItemInfoReq req) {//简单做，更新时间可判断被修改
         return req.getReqList().stream().map(a -> {
             ItemConfig itemConfig = itemCache.getById(a.getItemId());
-    if (Objects.nonNull(a.getLastModifyTime()) && a.getLastModifyTime() >= itemConfig.getUpdateTime().getTime()) {
+    if (Objects.nonNull(a.getLastModifyTime()) && a.getLastModifyTime() >= itemConfig.getUpdateTime().atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli()) {
                 return ItemInfoDTO.skip(a.getItemId());
     }
             ItemInfoDTO dto = new ItemInfoDTO();

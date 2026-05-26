@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.data.redis.core.ZSetOperations;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * Description: 游标分页工具类
  * Author: <a href="https://github.com/zongzibinbin">abin</a>
- * Date: 2023-03-28
+ * LocalDateTime: 2023-03-28
  */
 public class CursorUtils {
 
@@ -71,16 +71,16 @@ public class CursorUtils {
     }
 
     private static String toCursor(Object o) {
-        if (o instanceof Date) {
-            return String.valueOf(((Date) o).getTime());
+        if (o instanceof LocalDateTime) {
+            return String.valueOf(((LocalDateTime) o).atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli());
         } else {
             return o.toString();
         }
     }
 
     private static Object parseCursor(String cursor, Class<?> cursorClass) {
-        if (Date.class.isAssignableFrom(cursorClass)) {
-            return new Date(Long.parseLong(cursor));
+        if (LocalDateTime.class.isAssignableFrom(cursorClass)) {
+            return java.time.Instant.ofEpochMilli(Long.parseLong(cursor)).atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
         } else {
             return cursor;
         }

@@ -12,12 +12,12 @@ package com.abin.mallchat.common.chat.service.strategy.msg;
     import com.abin.mallchat.common.user.service.cache.UserCache;
     import org.springframework.context.ApplicationEventPublisher;
     import org.springframework.stereotype.Component;
-    import java.util.Date;
+    import java.time.LocalDateTime;
     import java.util.Objects;
     /**
  * Description: 撤回文本消息
  * Author: <a href="https://github.com/zongzibinbin">abin</a>
- * Date: 2023-06-04
+ * LocalDateTime: 2023-06-04
  */
 @Component
 @RequiredArgsConstructor
@@ -53,7 +53,7 @@ public class RecallMsgHandler extends AbstractMsgHandler<Object> {
 
     public void recall(Long recallUid, Message message) {//todo 消息覆盖问题用版本号解决
         MessageExtra extra = message.getExtra();
-    extra.setRecall(new MsgRecall(recallUid, new Date()));
+    extra.setRecall(new MsgRecall(recallUid, LocalDateTime.now()));
     Message update = new Message();
     update.setId(message.getId());
     update.setType(MessageTypeEnum.RECALL.getType());

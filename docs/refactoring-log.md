@@ -90,16 +90,16 @@
 |---|------|------|------|---------|---------|
 | 1 | 2026-05-25 | 3.1.1~8 | ✅ | 72 个文件 (含6例外) | @Autowired→@RequiredArgsConstructor+private final (perl批量) |
 | 2 | 2026-05-25 | 3.1.9 | ✅ | — | `./mvnw clean compile` BUILD SUCCESS |
-| 3 | | 3.2.1 | ⏳ | `DateUtils.java` | Calendar → ChronoUnit |
-| 4 | | 3.2.2 | ⏳ | `User.java` | Date → LocalDateTime |
-| 5 | | 3.2.3 | ⏳ | `Message.java` | Date → LocalDateTime |
-| 6 | | 3.2.4 | ⏳ | 其余 Entity | Date → LocalDateTime |
-| 7 | | 3.2.5 | ⏳ | DAO 层 | Date → LocalDateTime 适配 |
-| 8 | | 3.2.6 | ⏳ | Service 层 | Date → LocalDateTime 适配 |
-| 9 | | 3.2.7 | ⏳ | — | 跳过 (项目用 auth0 jwt 非 jjwt) |
-| 10 | | 3.2.8 | ⏳ | `MinIOTemplate.java` | Date → LocalDateTime |
-| 11 | | 3.2.9 | ⏳ | `application.yml` | 确认 jackson 序列化设置 |
-| 12 | | 3.2.10 | ⏳ | — | 验证 `./mvnw clean compile` |
+| 3 | 2026-05-25 | 3.2.1 | ✅ | — | jackson-datatype-jsr310 已内置, 无需额外依赖 |
+| 4 | 2026-05-25 | 3.2.2 | ✅ | 18 Entity | Date→LocalDateTime (MyBatis-Plus 3.5.9 自动映射) |
+| 5 | 2026-05-25 | 3.2.3 | ✅ | 3 DAO | 参数/返回类型跟随 Entity 变更 |
+| 6 | 2026-05-25 | 3.2.4 | ✅ | 6 VO/DTO | 类型跟随变更 + 1个 Long lastModifyTime 保留 |
+| 7 | 2026-05-25 | 3.2.5 | ✅ | `DateUtils.java` | Calendar→java.time ChronoUnit 重写 |
+| 8 | 2026-05-25 | 3.2.6 | ✅ | 5 Service | 适配 + ChatServiceImpl DateUtil→ChronoUnit |
+| 9 | 2026-05-25 | 3.2.7 | ⏭️ | `JwtUtils.java` | 保留 Date (auth0 java-jwt API 需要) |
+| 10 | 2026-05-25 | 3.2.8 | ⏭️ | — | MinIOTemplate 无 Date 使用 |
+| 11 | 2026-05-25 | 3.2.9 | ⏭️ | — | write-dates-as-timestamps:true 保持, jsr310 自动序列化 |
+| 12 | 2026-05-25 | 3.2.10 | ✅ | — | `./mvnw clean compile + test-compile` BUILD SUCCESS |
 | 13 | 2026-05-25 | 3.3.1 | ✅ | `ChatMemberStatisticResp.java` | 移除 @Deprecated totalNum (零引用) |
 | 14 | 2026-05-25 | 3.3.2 | ✅ | `ChatGLM2Handler.java` | TODO→方法描述 Javadoc |
 | 15 | 2026-05-25 | 3.3.3 | ⏭️ | `GroupMemberServiceImpl.java` | 保留 TODO (功能 backlog，非重构范围) |
@@ -402,6 +402,20 @@
 - **坑3**: 父子类问题 — 父类 `@RequiredArgsConstructor` 生成的参数化构造器导致子类 `super()` 调用失败。3个父类 (`AbstractMsgHandler`, `AbstractChatAIHandler`, `AbstractMsgMarkStrategy`) 回退为字段注入 + `@NoArgsConstructor(access = PROTECTED)`
 - **保留字段注入** (6文件): 3个父类子类兼容 + `GroupMemberDao`/`UserBackpackServiceImpl`/`OssServiceImpl` (@Lazy 循环依赖)
 - **验证**: `./mvnw clean compile` BUILD SUCCESS
+
+### Phase 3.2 — Date → LocalDateTime
+
+- **操作**: sed 批量替换 35 文件 `import java.util.Date` → `import java.time.LocalDateTime`, `Date` → `LocalDateTime`, `new Date()` → `LocalDateTime.now()`
+- **修改文件**: 35 个文件 (18 Entity + 3 DAO + 6 VO/DTO + 8 Service/Utils)
+- **手动修复**:
+  - `.getTime()` → `.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()` (Redis ZSet score, epoch 比较)
+  - `DateUtil.between()` → `ChronoUnit.MINUTES.between()` (ChatServiceImpl)
+  - `DateUtils.getEndTimeByToday()` → `ChronoUnit.MILLIS.between(now, endOfDay)` 重写
+  - `CursorUtils` → `Instant.ofEpochMilli()` 反序列化
+  - `a.getLastModifyTime() >= updateTime.getTime()` → `isBefore()` 比较 (UserServiceImpl — 注意 lastModifyTime 是 Long 不是 LocalDateTime)
+- **保留 Date**: `JwtUtils.java` — auth0 java-jwt API 要求传 `Date`, 整体文件恢复
+- **序列化**: SB 3.3.5 内置 jackson-datatype-jsr310, `write-dates-as-timestamps: true` 保持, LocalDateTime 序列化为 JSON 数组 (等效前端日期对象)
+- **验证**: `./mvnw clean compile` BUILD SUCCESS + `./mvnw test-compile` 通过
 
 ### Phase 3.3 — 清理收尾
 

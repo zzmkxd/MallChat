@@ -37,7 +37,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,7 +47,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Description: websocket处理类
  * Author: <a href="https://github.com/zongzibinbin">abin</a>
- * Date: 2023-03-19 16:21
+ * LocalDateTime: 2023-03-19 16:21
  */
 @Component
 @Slf4j
@@ -136,7 +136,7 @@ public class WebSocketServiceImpl implements WebSocketService {
         if (uidOptional.isPresent() && offlineAll) {//已登录用户断连,并且全下线成功
             User user = new User();
             user.setId(uidOptional.get());
-            user.setLastOptTime(new Date());
+            user.setLastOptTime(LocalDateTime.now());
             applicationEventPublisher.publishEvent(new UserOfflineEvent(this, user));
         }
     }
@@ -166,7 +166,7 @@ public class WebSocketServiceImpl implements WebSocketService {
         //发送用户上线事件
         boolean online = userCache.isOnline(user.getId());
         if (!online) {
-            user.setLastOptTime(new Date());
+            user.setLastOptTime(LocalDateTime.now());
             user.refreshIp(NettyUtil.getAttr(channel, NettyUtil.IP));
             applicationEventPublisher.publishEvent(new UserOnlineEvent(this, user));
         }

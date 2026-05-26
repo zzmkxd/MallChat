@@ -1,4 +1,6 @@
 package com.abin.mallchat.common.user.service.cache;
+
+    import java.time.LocalDateTime;
     import lombok.RequiredArgsConstructor;
     import cn.hutool.core.collection.CollUtil;
     import cn.hutool.core.lang.Pair;
@@ -54,13 +56,13 @@ public class UserCache {
     }
 
     //用户上线
-    public void online(Long uid, Date optTime) {
+    public void online(Long uid, LocalDateTime optTime) {
         String onlineKey = RedisKey.getKey(RedisKey.ONLINE_UID_ZET);
     String offlineKey = RedisKey.getKey(RedisKey.OFFLINE_UID_ZET);
     //移除离线表
         RedisUtils.zRemove(offlineKey, uid);
     //更新上线表
-        RedisUtils.zAdd(onlineKey, uid, optTime.getTime());
+        RedisUtils.zAdd(onlineKey, uid, (double) optTime.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli());
     }
 
     //获取用户上线列表
@@ -76,13 +78,13 @@ public class UserCache {
     }
 
     //用户下线
-    public void offline(Long uid, Date optTime) {
+    public void offline(Long uid, LocalDateTime optTime) {
         String onlineKey = RedisKey.getKey(RedisKey.ONLINE_UID_ZET);
     String offlineKey = RedisKey.getKey(RedisKey.OFFLINE_UID_ZET);
     //移除上线线表
         RedisUtils.zRemove(onlineKey, uid);
     //更新上线表
-        RedisUtils.zAdd(offlineKey, uid, optTime.getTime());
+        RedisUtils.zAdd(offlineKey, uid, (double) optTime.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli());
     }
 
     public CursorPageBaseResp<Pair<Long, Double>> getOnlineCursorPage(CursorPageBaseReq pageBaseReq) {
@@ -100,7 +102,7 @@ public class UserCache {
 
     public void refreshUserModifyTime(Long uid) {
         String key = RedisKey.getKey(RedisKey.USER_MODIFY_STRING, uid);
-    RedisUtils.set(key, new Date().getTime());
+    RedisUtils.set(key, System.currentTimeMillis());
     }
 
     /**

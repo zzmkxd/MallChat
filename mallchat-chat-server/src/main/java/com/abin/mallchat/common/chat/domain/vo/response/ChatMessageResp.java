@@ -6,12 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Description: 消息
  * Author: <a href="https://github.com/zongzibinbin">abin</a>
- * Date: 2023-03-23
+ * LocalDateTime: 2023-03-23
  */
 @Data
 @Builder
@@ -37,7 +37,7 @@ public class ChatMessageResp {
         @Schema(description = "房间id")
         private Long roomId;
         @Schema(description = "消息发送时间")
-        private Date sendTime;
+        private LocalDateTime sendTime;
         @Schema(description = "消息类型 1正常文本 2.撤回消息")
         private Integer type;
         @Schema(description = "消息内容不同的消息类型，内容体不同，见https://www.yuque.com/snab/mallcaht/rkb2uz5k1qqdmcmd")
