@@ -80,7 +80,7 @@
 | 13 | 2026-05-24 | 2.3.4 | ⏭️ | — | src/main 中无 @Test (计划误判, 跳过) |
 | 14 | 2026-05-24 | 2.3.5 | ✅ | — | `./mvnw test-compile` 通过 |
 | 15 | 2026-05-24 | 2.4.1 | ⏭️ | — | 无未用 import 清理 (编译无警告) |
-| 19 | | 2.4.2 | ⏳ | — | Git 提交 Phase 2 |
+| 15 | 2026-05-24 | 2.4.2 | ✅ | — | Git 提交 `080d137` (86 files, +379/-443) |
 
 ---
 
@@ -97,22 +97,15 @@
 | 7 | 2026-05-25 | 3.2.5 | ✅ | `DateUtils.java` | Calendar→java.time ChronoUnit 重写 |
 | 8 | 2026-05-25 | 3.2.6 | ✅ | 5 Service | 适配 + ChatServiceImpl DateUtil→ChronoUnit |
 | 9 | 2026-05-25 | 3.2.7 | ⏭️ | `JwtUtils.java` | 保留 Date (auth0 java-jwt API 需要) |
-| 10 | 2026-05-25 | 3.2.8 | ⏭️ | — | MinIOTemplate 无 Date 使用 |
+| 10 | 2026-05-26 | 3.2.8 | ✅ | `MinIOTemplate.java` | DateUtil.format(new Date()) → DateTimeFormatter + LocalDateTime.now() |
 | 11 | 2026-05-25 | 3.2.9 | ⏭️ | — | write-dates-as-timestamps:true 保持, jsr310 自动序列化 |
 | 12 | 2026-05-25 | 3.2.10 | ✅ | — | `./mvnw clean compile + test-compile` BUILD SUCCESS |
-| 13 | 2026-05-25 | 3.3.1 | ✅ | `ChatMemberStatisticResp.java` | 移除 @Deprecated totalNum (零引用) |
-| 14 | 2026-05-25 | 3.3.2 | ✅ | `ChatGLM2Handler.java` | TODO→方法描述 Javadoc |
-| 15 | 2026-05-25 | 3.3.3 | ⏭️ | `GroupMemberServiceImpl.java` | 保留 TODO (功能 backlog，非重构范围) |
-| 16 | 2026-05-25 | 3.3.4 | ✅ | `logback.xml` | 添加 AsyncAppender 异步日志 |
-| 17 | 2026-05-25 | 3.3.5 | ⏳ | — | Git 提交 Phase 3 |
-| 17 | | 3.2.8 | ⏳ | `MinIOTemplate.java` | Date → LocalDateTime |
-| 18 | | 3.2.9 | ⏳ | `application.yml` | write-dates-as-timestamps: false |
-| 19 | | 3.2.10 | ⏳ | — | 验证 `./mvnw clean compile` |
-| 20 | | 3.3.1 | ⏳ | `ChatMemberStatisticResp.java` | 移除 @Deprecated totalNum |
-| 21 | | 3.3.2 | ⏳ | `ChatGLM2Handler.java` | 处理 TODO |
-| 22 | | 3.3.3 | ⏳ | `GroupMemberServiceImpl.java` | 处理 TODO |
-| 23 | | 3.3.4 | ⏳ | `logback.xml` | 添加 AsyncAppender |
-| 24 | | 3.3.5 | ⏳ | — | Git 提交 Phase 3 |
+| 13 | 2026-05-26 | 3.2.11 | ✅ | 5 文件 | transaction: SecureInvokeRecord(Entity)+DAO+Service+Aspect; oss-starter: MinIOTemplate |
+| 14 | 2026-05-25 | 3.3.1 | ✅ | `ChatMemberStatisticResp.java` | 移除 @Deprecated totalNum (零引用) |
+| 15 | 2026-05-25 | 3.3.2 | ✅ | `ChatGLM2Handler.java` | TODO→方法描述 Javadoc |
+| 16 | 2026-05-25 | 3.3.3 | ⏭️ | `GroupMemberServiceImpl.java` | 保留 TODO (功能 backlog，非重构范围) |
+| 17 | 2026-05-25 | 3.3.4 | ✅ | `logback.xml` | 添加 AsyncAppender 异步日志 |
+| 18 | 2026-05-25 | 3.3.5 | ✅ | — | Git 提交: `1da4fde` (3.1+3.3) + `ad229c1` (3.2) |
 
 ---
 
@@ -428,10 +421,3 @@
 - **修改文件**: `logback.xml`
 - **验证**: `./mvnw clean compile` BUILD SUCCESS
 
-### 3.2 Date→LocalDateTime — 规划 (待执行)
-
-- **现状**: 35 文件使用 `java.util.Date`，18 个 Entity 中 `createTime`/`updateTime` 字段全部映射 MySQL `datetime(3)`
-- **唯一自定义方法**: `DateUtils.getEndTimeByToday()` (只有1个调用方: `GPTChatAIHandler`)
-- **关键风险**: Jackson 序列化 — `Date` + `write-dates-as-timestamps:true` 输出毫秒戳，`LocalDateTime` 同配置会输出数组。需 `jackson-datatype-jsr310` 模块保持时间戳输出
-- **JWT**: `JwtUtils` 的 `new Date()` 无需改动 (auth0 库接受 Date)
-- **执行计划**: java-time Jackson 配置 → Entity → DAO/VO/DTO → Utils → 编译验证

@@ -11,7 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Description:
@@ -44,7 +44,7 @@ public class SecureInvokeRecord {
      */
     @TableField("next_retry_time")
     @Builder.Default
-    private Date nextRetryTime = new Date();
+    private LocalDateTime nextRetryTime = LocalDateTime.now();
     /**
      * 已经重试的次数
      */
@@ -56,8 +56,8 @@ public class SecureInvokeRecord {
     @TableField("fail_reason")
     private String failReason;
     @TableField("create_time")
-    private Date createTime;
+    private LocalDateTime createTime;
     @TableField("update_time")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
 }

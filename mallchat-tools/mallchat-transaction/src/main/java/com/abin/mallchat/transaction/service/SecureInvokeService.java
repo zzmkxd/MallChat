@@ -1,6 +1,5 @@
 package com.abin.mallchat.transaction.service;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.abin.mallchat.transaction.dao.SecureInvokeRecordDao;
@@ -17,7 +16,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import jakarta.validation.constraints.NotNull;
 import java.lang.reflect.Method;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
@@ -63,9 +62,9 @@ public class SecureInvokeService {
         secureInvokeRecordDao.updateById(update);
     }
 
-    private Date getNextRetryTime(Integer retryTimes) {//或者可以采用退避算法
+    private LocalDateTime getNextRetryTime(Integer retryTimes) {//或者可以采用退避算法
         double waitMinutes = Math.pow(RETRY_INTERVAL_MINUTES, retryTimes);//重试时间指数上升 2m 4m 8m 16m
-        return DateUtil.offsetMinute(new Date(), (int) waitMinutes);
+        return LocalDateTime.now().plusMinutes((long) waitMinutes);
     }
 
     private void removeRecord(Long id) {

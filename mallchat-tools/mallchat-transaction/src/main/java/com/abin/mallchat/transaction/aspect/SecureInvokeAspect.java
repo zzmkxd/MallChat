@@ -1,5 +1,4 @@
 package com.abin.mallchat.transaction.aspect;
-    import cn.hutool.core.date.DateUtil;
     import com.abin.mallchat.transaction.annotation.SecureInvoke;
     import com.abin.mallchat.transaction.domain.dto.SecureInvokeDTO;
     import com.abin.mallchat.transaction.domain.entity.SecureInvokeRecord;
@@ -17,7 +16,7 @@ package com.abin.mallchat.transaction.aspect;
     import org.springframework.stereotype.Component;
     import org.springframework.transaction.support.TransactionSynchronizationManager;
     import java.lang.reflect.Method;
-    import java.util.Date;
+    import java.time.LocalDateTime;
     import java.util.List;
     import java.util.stream.Collectors;
     import java.util.stream.Stream;
@@ -52,7 +51,7 @@ public class SecureInvokeAspect {
     SecureInvokeRecord record = SecureInvokeRecord.builder()
                 .secureInvokeDTO(dto)
                 .maxRetryTimes(secureInvoke.maxRetryTimes())
-                .nextRetryTime(DateUtil.offsetMinute(new Date(), (int) SecureInvokeService.RETRY_INTERVAL_MINUTES))
+                .nextRetryTime(LocalDateTime.now().plusMinutes((long) SecureInvokeService.RETRY_INTERVAL_MINUTES))
                 .build();
     secureInvokeService.invoke(record, async);
     return null;

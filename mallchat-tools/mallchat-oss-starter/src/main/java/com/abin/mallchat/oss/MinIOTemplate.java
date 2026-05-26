@@ -1,7 +1,5 @@
 package com.abin.mallchat.oss;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.util.StrUtil;
 import com.abin.mallchat.oss.domain.OssReq;
@@ -15,8 +13,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -142,7 +141,7 @@ public class MinIOTemplate {
         String uid = Optional.ofNullable(req.getUid()).map(String::valueOf).orElse("000000");
         cn.hutool.core.lang.UUID uuid = cn.hutool.core.lang.UUID.fastUUID();
         String suffix = FileNameUtil.getSuffix(req.getFileName());
-        String yearAndMonth = DateUtil.format(new Date(), DatePattern.NORM_MONTH_PATTERN);
+        String yearAndMonth = DateTimeFormatter.ofPattern("yyyy-MM").format(LocalDateTime.now());
         return req.getFilePath() + StrUtil.SLASH + yearAndMonth + StrUtil.SLASH + uid + StrUtil.SLASH + uuid + StrUtil.DOT + suffix;
     }
 
