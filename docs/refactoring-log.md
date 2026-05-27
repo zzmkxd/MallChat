@@ -520,3 +520,18 @@
 - **思路**: 最小化骨架 — 只验证编译。实际 Docker build 需 `package` 步骤但因为 GitHub Actions runner 内存充足，后续可补 Docker 构建步骤。4.4.2 需 Push 到 GitHub 后验证。
 - **验证**: 本地 `./mvnw compile + test-compile` 通过 (等价 CI 步骤)
 
+### Phase 4 收尾审查 (2026-05-26)
+
+全项目逐维度扫描结果：
+
+| 检查项 | 范围 | 结果 |
+|--------|------|------|
+| `javax.*` 残留 | 全部 .java/.properties | **0** — jakarta 迁移完整 |
+| `io.swagger.annotations` 残留 | 全部 .java | **0** — Springdoc 迁移完整 |
+| `java.util.Date` 残留 | 全部 .java | **1** — `JwtUtils.java` (auth0-java-jwt API 需要) |
+| `@Autowired` 字段注入 | chat-server src/main | **7** — 全部合理: 3 父类 + 3 @Lazy + 1 @Qualifier |
+| `@Autowired` 字段注入 | mallchat-tools | **3** — setter 注入 + 已注释 + @Lazy, 全部合理 |
+| `TODO` 残留 | chat-server src/main | **1** — `GroupMemberServiceImpl` (产品 backlog) |
+| 编译 | `mvn compile -am` | **BUILD SUCCESS** |
+| `.gitignore` yml 问题 | 根目录 | ⚠️ `*.yml` 规则屏蔽 `docker-compose.yml` 和 `.github/workflows/build.yml`, 需 `-f` 强制 add |
+
