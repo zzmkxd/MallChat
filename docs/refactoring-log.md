@@ -149,8 +149,8 @@
 
 | # | 时间 | 步骤 | 状态 | 修改文件 | 操作摘要 |
 |---|------|------|------|---------|---------|
-| 15 | | 4.4.1 | ⏳ | `.github/workflows/build.yml` (新增) | 编译 + 测试, JDK 21 |
-| 16 | | 4.4.2 | ⏳ | — | 需 Push 后验证 |
+| 15 | 2026-05-26 | 4.4.1 | ✅ | `.github/workflows/build.yml` (新增) | compile + test-compile, JDK 21, ubuntu-latest, maven cache |
+| 16 | | 4.4.2 | ⏳ | — | 需实际 Push 到 GitHub 后验证 |
 
 ### 4.5 收尾
 
@@ -508,4 +508,15 @@
   4. `RedissonConfig`: env var `SPRING_REDIS_HOST` 不传 `RedisProperties` → 改 `@Value`
 - **教训**: 编译通过 ≠ 运行时通过, 4 个 Bug 全是 `docker compose up` 首次暴露
 - **验证**: `docker compose up -d` → 6/6 运行 → `curl /actuator/health` → `{"status":"UP"}`
+
+### Phase 4.4 — CI/CD 骨架
+
+- **操作**: 新建 `.github/workflows/build.yml`
+- **内容**:
+  - 触发: `push` + `PR` → `main`
+  - JDK 21 (temurin) + `actions/setup-java@v4` 内置 Maven cache
+  - `./mvnw compile -pl mallchat-chat-server -am -B` — 编译主模块
+  - `./mvnw test-compile -pl mallchat-chat-server -am -B` — 测试编译
+- **思路**: 最小化骨架 — 只验证编译。实际 Docker build 需 `package` 步骤但因为 GitHub Actions runner 内存充足，后续可补 Docker 构建步骤。4.4.2 需 Push 到 GitHub 后验证。
+- **验证**: 本地 `./mvnw compile + test-compile` 通过 (等价 CI 步骤)
 
