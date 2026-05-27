@@ -456,3 +456,56 @@
 - **修改文件**: `logback.xml`
 - **验证**: `./mvnw clean compile` BUILD SUCCESS
 
+### 3.2 Date→LocalDateTime — 补漏 (2026-05-26)
+
+- **操作**: tools 模块 5 文件 Date→LocalDateTime
+- **修改文件**:
+  - `SecureInvokeRecord.java`: 3 字段 `Date`→`LocalDateTime`
+  - `SecureInvokeRecordDao.java`: `new Date()`→`LocalDateTime.now()`, `DateUtil.offsetMinute`→`minusMinutes`
+  - `SecureInvokeService.java`: `getNextRetryTime()` 返回类型 + `DateUtil.offsetMinute`→`plusMinutes`
+  - `SecureInvokeAspect.java`: `DateUtil.offsetMinute(new Date())`→`LocalDateTime.now().plusMinutes()`
+  - `MinIOTemplate.java`: `DateUtil.format(new Date())`→`DateTimeFormatter.ofPattern("yyyy-MM").format(LocalDateTime.now())`
+- **思路**: Phase 3.2 只覆盖 chat-server，复查发现 tools 模块遗漏。MinIOTemplate 之前误判"未见 Date 使用"。
+- **验证**: `./mvnw clean compile` BUILD SUCCESS
+
+---
+
+## Phase 4 详细变更
+
+### Phase 4.0 — 全链路编码统一
+
+- **操作**: 逐文件修改 logback encoder charset + JDBC collation + SQL collation
+- **修改文件**:
+  - `logback.xml`: STDOUT、fileAppender、fileError 3 个 encoder 新增 `<charset>UTF-8</charset>`
+  - `application.yml`: JDBC URL 追加 `&connectionCollation=utf8mb4_unicode_ci`
+  - `docs/mallchat.sql`: wx_msg 表 2 处 `utf8mb4_general_ci` → `utf8mb4_unicode_ci`
+- **思路**: 全链路 UTF-8 — 日志输出、MySQL 连接、表 collation 统一，杜绝跨环境乱码
+- **验证**: `./mvnw clean compile` BUILD SUCCESS
+
+### Phase 4.1 — Dockerfile + .dockerignore
+
+- **操作**:
+  - 初版多阶段 `maven:3.9-eclipse-temurin-21` → `eclipse-temurin:21-jre`，Maven 在 Docker 内 OOM (exit 137)
+  - 改为单阶段: 本机 `./mvnw clean package -DskipTests` 预构建 JAR，Dockerfile 只 COPY + JRE
+- **修改文件**: `Dockerfile` (新增), `.dockerignore` (新增)
+- **思路**: Windows Docker Desktop 内存限制，Maven 构建分离到宿主机。镜像 350MB (JRE 21 + 118MB JAR)。内建 UTF-8 环境变量。
+- **验证**: `docker build -t mallchat:latest .` 成功
+
+### Phase 4.2 — Docker Compose 全栈编排 + 运行时修复
+
+- **修改文件**:
+  - `docker-compose.yml` (新增): 6 服务 — MySQL 8.0(3307) + Redis 7(6380) + MinIO(9002) + RocketMQ NameServer(9877) + Broker + App(8080+8090)
+  - `broker.conf` (新增): RocketMQ Broker `brokerIP1` + `autoCreateTopicEnable`
+  - `application-docker.yml` (新增): Docker profile, 服务名映射容器名 + `spring.redis.*`
+  - `pom.xml`: springdoc 2.7.0→2.6.0 + knife4j 4.5→4.4; `mybatis-plus-boot-starter`→`mybatis-plus-spring-boot3-starter:3.5.10.1`
+  - `mallchat-common-starter/pom.xml`: artifactId 同上修改
+  - `RedissonConfig.java`: `RedisProperties`→`@Value` 注入 (env var 到不了 RedisProperties 的 bug)
+- **端口偏移**: 本机 3306/6379/9000/9876 被占, 全部偏移映射
+- **运行时修复链**:
+  1. springdoc 2.7.0 → 2.6.0: 2.7.0 需 Spring 6.2 (SB 3.4+), SB 3.3.5 用 2.6.0
+  2. knife4j 4.5 → 4.4: 跟随降级
+  3. `mybatis-plus-boot-starter:3.5.9` → `mybatis-plus-spring-boot3-starter:3.5.10.1`: SB3 专版 artifactId
+  4. `RedissonConfig`: env var `SPRING_REDIS_HOST` 不传 `RedisProperties` → 改 `@Value`
+- **教训**: 编译通过 ≠ 运行时通过, 4 个 Bug 全是 `docker compose up` 首次暴露
+- **验证**: `docker compose up -d` → 6/6 运行 → `curl /actuator/health` → `{"status":"UP"}`
+
