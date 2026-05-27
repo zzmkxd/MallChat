@@ -1,0 +1,33 @@
+# Git
+.git/
+.gitattributes
+.gitignore
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Maven build output (except final JAR)
+**/target/
+!mallchat-chat-server/target/*.jar
+
+# Logs
+logs/
+
+# Docker files
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Environment & secrets
+.env
+application-local.properties
+application-my-*.properties
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docs (rebuild not needed)
+docs/

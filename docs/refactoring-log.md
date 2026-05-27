@@ -123,9 +123,10 @@
 
 | # | 时间 | 步骤 | 状态 | 修改文件 | 操作摘要 |
 |---|------|------|------|---------|---------|
-| 4 | | 4.1.1 | ⏳ | `Dockerfile` (新增) | 多阶段构建 Maven + JDK 21 JRE |
-| 5 | | 4.1.2 | ⏳ | `Dockerfile` | UTF-8 环境: LANG=C.UTF-8 + -Dfile.encoding=UTF-8 |
-| 6 | | 4.1.3 | ⏳ | `.dockerignore` (新增) | Docker 构建忽略文件 |
+| 4 | 2026-05-26 | 4.1.1 | ✅ | `Dockerfile` (新增) | 单阶段 eclipse-temurin:21-jre + COPY 预构建 JAR (多阶段 Maven OOM) |
+| 5 | 2026-05-26 | 4.1.2 | ✅ | `Dockerfile` | UTF-8: ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 TZ=Asia/Shanghai + -Dfile.encoding=UTF-8 |
+| 6 | 2026-05-26 | 4.1.3 | ✅ | `.dockerignore` (新增) | 排除 .git .idea target(除最终JAR) logs docs .env |
+| 7 | 2026-05-26 | 4.1.4 | ✅ | — | `docker build` 成功, 镜像 mallchat:latest |
 
 ### 4.2 docker-compose.yml
 
