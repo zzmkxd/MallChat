@@ -1,0 +1,120 @@
+services:
+  # ==================== MySQL 8.0 ====================
+  mysql:
+    image: mysql:8.0
+    container_name: mallchat-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: mallchat
+    ports:
+      - "3307:3306"   # 3306 被本机 MySQL 占用
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docs/mallchat.sql:/docker-entrypoint-initdb.d/01-init.sql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123456"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - mallchat-net
+
+  # ==================== Redis 7 ====================
+  redis:
+    image: redis:7-alpine
+    container_name: mallchat-redis
+    ports:
+      - "6380:6379"   # 6379 避免本机 Redis 冲突
+    volumes:
+      - redis-data:/data
+    command: redis-server --requirepass 123456 --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "123456", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - mallchat-net
+
+  # ==================== MinIO ====================
+  minio:
+    image: minio/minio:latest
+    container_name: mallchat-minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9002:9000"   # API
+      - "9003:9001"   # Console
+    volumes:
+      - minio-data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - mallchat-net
+
+  # ==================== RocketMQ NameServer ====================
+  rocketmq-namesrv:
+    image: apache/rocketmq:5.1.4
+    container_name: mallchat-rocketmq-namesrv
+    command: sh mqnamesrv
+    ports:
+      - "9877:9876"
+    networks:
+      - mallchat-net
+
+  # ==================== RocketMQ Broker ====================
+  rocketmq-broker:
+    image: apache/rocketmq:5.1.4
+    container_name: mallchat-rocketmq-broker
+    depends_on:
+      - rocketmq-namesrv
+    command: sh mqbroker -n rocketmq-namesrv:9876 -c /home/rocketmq/conf/broker.conf
+    ports:
+      - "10909:10909"
+      - "10911:10911"
+    volumes:
+      - ./broker.conf:/home/rocketmq/conf/broker.conf
+    networks:
+      - mallchat-net
+
+  # ==================== MallChat App ====================
+  app:
+    image: mallchat:latest
+    container_name: mallchat-app
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8080:8080"   # HTTP API
+      - "8090:8090"   # WebSocket
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: "6379"
+      SPRING_REDIS_PASSWORD: "123456"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/mallchat?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&connectionCollation=utf8mb4_unicode_ci"
+    volumes:
+      - app-logs:/app/logs
+    networks:
+      - mallchat-net
+
+volumes:
+  mysql-data:
+  redis-data:
+  minio-data:
+  app-logs:
+
+networks:
+  mallchat-net:
+    driver: bridge

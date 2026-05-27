@@ -132,19 +132,18 @@
 
 | # | 时间 | 步骤 | 状态 | 修改文件 | 操作摘要 |
 |---|------|------|------|---------|---------|
-| 7 | | 4.2.1 | ⏳ | `docker-compose.yml` (新增) | MySQL 8.0 + utf8mb4 + DB 自动初始化 |
-| 8 | | 4.2.2 | ⏳ | `docker-compose.yml` | Redis 7 |
-| 9 | | 4.2.3 | ⏳ | `docker-compose.yml` | MinIO |
-| 10 | | 4.2.4 | ⏳ | `docker-compose.yml` | RocketMQ NameServer + Broker |
-| 11 | | 4.2.5 | ⏳ | `docker-compose.yml` | App:8080 + Netty:8090 |
+| 8 | 2026-05-26 | 4.2.1-5 | ✅ | `docker-compose.yml` (新增) | MySQL(3307)+Redis(6380)+MinIO(9002)+RocketMQ(9877)+App 全栈编排 |
+| 9 | 2026-05-26 | 4.2b | ✅ | `pom.xml` ×2 | MP: `mybatis-plus-boot-starter`→`mybatis-plus-spring-boot3-starter:3.5.10.1` |
+| 10 | 2026-05-26 | 4.2b | ✅ | `pom.xml` | springdoc 2.7.0→2.6.0 + knife4j 4.5→4.4 |
+| 11 | 2026-05-26 | 4.2c | ✅ | `RedissonConfig.java` | RedisProperties→@Value (env var 不传 RedisProperties) |
+| 12 | 2026-05-26 | 4.2.5 | ✅ | — | `docker compose up` → `{"status":"UP"}` 全栈验证通过 |
 
 ### 4.3 配置注入
 
 | # | 时间 | 步骤 | 状态 | 修改文件 | 操作摘要 |
 |---|------|------|------|---------|---------|
-| 12 | | 4.3.1 | ⏳ | `application-docker.yml` (新增) | Spring Docker 环境配置 |
-| 13 | | 4.3.2 | ⏳ | `docker-compose.yml` | 敏感值通过 env vars 注入 |
-| 14 | | 4.3.3 | ⏳ | — | 验证 `docker compose up` + health check |
+| 13 | 2026-05-26 | 4.3.1 | ✅ | `application-docker.yml` (新增) | Spring Docker 配置 + `spring.redis.*` + env vars via compose |
+| 14 | 2026-05-26 | 4.3.3 | ✅ | — | `curl localhost:8080/actuator/health` → `{"status":"UP"}` |
 
 ### 4.4 CI/CD
 

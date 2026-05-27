@@ -27,8 +27,8 @@
         <skipTests>true</skipTests>
         <docker.host>http://192.168.3.101:2375</docker.host>
         <hutool.version>5.8.34</hutool.version>
-        <springdoc.version>2.7.0</springdoc.version>
-        <knife4j.version>4.5.0</knife4j.version>
+        <springdoc.version>2.6.0</springdoc.version>
+        <knife4j.version>4.4.0</knife4j.version>
         <mybatis-plus-generator.version>3.4.1</mybatis-plus-generator.version>
         <mybatis.version>3.5.17</mybatis.version>
         <mysql-connector.version>8.0.29</mysql-connector.version>
@@ -39,8 +39,8 @@
         <lombok.version>1.18.36</lombok.version>
         <netty-all.version>4.1.114.Final</netty-all.version>
         <weixin-java-mp.version>4.4.0</weixin-java-mp.version>
-        <mybatis-plus-boot-starter.version>3.5.9</mybatis-plus-boot-starter.version>
-        <mybatis-plus-jsqlparser.version>3.5.9</mybatis-plus-jsqlparser.version>
+        <mybatis-plus-spring-boot3-starter.version>3.5.10.1</mybatis-plus-spring-boot3-starter.version>
+        <mybatis-plus-jsqlparser.version>3.5.10.1</mybatis-plus-jsqlparser.version>
         <jsoup.version>1.18.1</jsoup.version>
         <okhttp.version>4.8.1</okhttp.version>
         <redisson-spring-boot-starter.version>3.36.0</redisson-spring-boot-starter.version>
@@ -75,8 +75,8 @@
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${mybatis-plus-boot-starter.version}</version>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+                <version>${mybatis-plus-spring-boot3-starter.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
