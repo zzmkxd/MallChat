@@ -109,20 +109,55 @@
 
 ---
 
-## Phase 4: Docker 化部署
+## Phase 4: 编码修复 + Docker 化部署
+
+### 4.0 全链路编码统一
 
 | # | 时间 | 步骤 | 状态 | 修改文件 | 操作摘要 |
 |---|------|------|------|---------|---------|
-| 1 | | 4.1.1 | ⏳ | `Dockerfile` (新增) | 多阶段构建 |
-| 2 | | 4.1.2 | ⏳ | `.dockerignore` (新增) | Docker 忽略文件 |
-| 3 | | 4.1.3 | ⏳ | — | 验证 `docker build` |
-| 4 | | 4.2.1 | ⏳ | `docker-compose.yml` (新增) | 编排 MySQL + Redis + MinIO + RocketMQ |
-| 5 | | 4.2.2 | ⏳ | `application-docker.properties` (新增) | Docker 环境配置 |
-| 6 | | 4.2.3 | ⏳ | — | 验证 `docker-compose up` |
-| 7 | | 4.3.1 | ⏳ | `.github/workflows/build.yml` (新增) | CI/CD 流水线 |
-| 8 | | 4.3.2 | ⏳ | — | 验证 Push 触发 |
-| 9 | | 4.4.1 | ⏳ | `README.md` | Docker 部署说明 |
-| 10 | | 4.4.2 | ⏳ | — | Git 提交 Phase 4 |
+| 1 | 2026-05-26 | 4.0.1 | ✅ | `logback.xml` | STDOUT + fileAppender + fileError 3 个 encoder 添加 `<charset>UTF-8</charset>` |
+| 2 | 2026-05-26 | 4.0.2 | ✅ | `application.yml` | JDBC URL 追加 `&connectionCollation=utf8mb4_unicode_ci` |
+| 3 | 2026-05-26 | 4.0.3 | ✅ | `docs/mallchat.sql` | `wx_msg` 表 2 处 `utf8mb4_general_ci` → `utf8mb4_unicode_ci` |
+
+### 4.1 Dockerfile
+
+| # | 时间 | 步骤 | 状态 | 修改文件 | 操作摘要 |
+|---|------|------|------|---------|---------|
+| 4 | | 4.1.1 | ⏳ | `Dockerfile` (新增) | 多阶段构建 Maven + JDK 21 JRE |
+| 5 | | 4.1.2 | ⏳ | `Dockerfile` | UTF-8 环境: LANG=C.UTF-8 + -Dfile.encoding=UTF-8 |
+| 6 | | 4.1.3 | ⏳ | `.dockerignore` (新增) | Docker 构建忽略文件 |
+
+### 4.2 docker-compose.yml
+
+| # | 时间 | 步骤 | 状态 | 修改文件 | 操作摘要 |
+|---|------|------|------|---------|---------|
+| 7 | | 4.2.1 | ⏳ | `docker-compose.yml` (新增) | MySQL 8.0 + utf8mb4 + DB 自动初始化 |
+| 8 | | 4.2.2 | ⏳ | `docker-compose.yml` | Redis 7 |
+| 9 | | 4.2.3 | ⏳ | `docker-compose.yml` | MinIO |
+| 10 | | 4.2.4 | ⏳ | `docker-compose.yml` | RocketMQ NameServer + Broker |
+| 11 | | 4.2.5 | ⏳ | `docker-compose.yml` | App:8080 + Netty:8090 |
+
+### 4.3 配置注入
+
+| # | 时间 | 步骤 | 状态 | 修改文件 | 操作摘要 |
+|---|------|------|------|---------|---------|
+| 12 | | 4.3.1 | ⏳ | `application-docker.yml` (新增) | Spring Docker 环境配置 |
+| 13 | | 4.3.2 | ⏳ | `docker-compose.yml` | 敏感值通过 env vars 注入 |
+| 14 | | 4.3.3 | ⏳ | — | 验证 `docker compose up` + health check |
+
+### 4.4 CI/CD
+
+| # | 时间 | 步骤 | 状态 | 修改文件 | 操作摘要 |
+|---|------|------|------|---------|---------|
+| 15 | | 4.4.1 | ⏳ | `.github/workflows/build.yml` (新增) | 编译 + 测试, JDK 21 |
+| 16 | | 4.4.2 | ⏳ | — | 需 Push 后验证 |
+
+### 4.5 收尾
+
+| # | 时间 | 步骤 | 状态 | 修改文件 | 操作摘要 |
+|---|------|------|------|---------|---------|
+| 17 | | 4.5.1 | ⏳ | `CLAUDE.md` | 添加 Docker 命令 |
+| 18 | | 4.5.2 | ⏳ | — | Git 提交 Phase 4 |
 
 ---
 
