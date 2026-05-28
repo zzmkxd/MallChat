@@ -19,6 +19,9 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Make mvnw executable
+        run: chmod +x mvnw
+
       - name: Compile main module
         run: ./mvnw compile -pl mallchat-chat-server -am -B
 
